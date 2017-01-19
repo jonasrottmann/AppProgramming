@@ -1,7 +1,6 @@
 package de.jonasrottmann.planerapp.ui;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
@@ -30,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        isInTwoPaneLayout = (container2 == null);
+        isInTwoPaneLayout = (container2 != null);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container1, OverviewFragment.getInstance()).commit();
         if (isInTwoPaneLayout) {

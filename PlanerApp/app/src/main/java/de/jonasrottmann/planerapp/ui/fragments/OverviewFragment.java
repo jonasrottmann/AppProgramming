@@ -3,16 +3,13 @@ package de.jonasrottmann.planerapp.ui.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import de.jonasrottmann.planerapp.R;
 import de.jonasrottmann.planerapp.ui.OverviewAdapter;
-import de.jonasrottmann.planerapp.ui.views.HorizontalSpaceItemDecoration;
 
 /**
  * Created by Jonas Rottmann on 19.01.17.
@@ -33,15 +30,14 @@ public class OverviewFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
 
         // Setup Toolbar
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        activity.setSupportActionBar(toolbar);
+        //Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        //AppCompatActivity activity = (AppCompatActivity) getActivity();
+        //activity.setSupportActionBar(toolbar);
 
         // Setup Views
         recycler = (RecyclerView) view.findViewById(R.id.recycler);
-        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recycler.setAdapter(new OverviewAdapter(getActivity()));
-        recycler.addItemDecoration(new HorizontalSpaceItemDecoration(10));
 
         return view;
     }
