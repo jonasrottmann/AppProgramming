@@ -1,4 +1,4 @@
-package de.jonasrottmann.planerapp.ui;
+package de.jonasrottmann.planerapp.ui.views;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;

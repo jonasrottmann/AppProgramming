@@ -12,6 +12,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
 
+/**
+ * Created by Jonas Rottmann on 19.01.17.
+ * Copyright © 2017 fluidmobile. All rights reserved.
+ */
 public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHolder> {
 
     private final Context context;
