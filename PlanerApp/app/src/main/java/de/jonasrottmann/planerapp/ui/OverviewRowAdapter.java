@@ -46,7 +46,6 @@ public class OverviewRowAdapter extends RecyclerView.Adapter<OverviewRowAdapter.
         return 9;
     }
 
-
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.title)
         TextView title;

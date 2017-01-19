@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
 import de.jonasrottmann.planerapp.ui.fragments.DetailFragment;
 import de.jonasrottmann.planerapp.ui.fragments.OverviewFragment;
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         isInTwoPaneLayout = (container2 != null);
 
