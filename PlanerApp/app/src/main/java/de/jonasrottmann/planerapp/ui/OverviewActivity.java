@@ -15,7 +15,9 @@ public class OverviewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         recycler = new RecyclerView(this);
-        recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        recycler.setAdapter(new OverviewAdapter(this));
+        recycler.addItemDecoration(new HorizontalSpaceItemDecoration(10));
         setContentView(recycler);
     }
 }
