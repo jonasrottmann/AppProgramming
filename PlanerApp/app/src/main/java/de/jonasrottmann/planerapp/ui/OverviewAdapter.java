@@ -10,7 +10,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
-import de.jonasrottmann.planerapp.data.TimeSlot;
+import de.jonasrottmann.planerapp.data.helper.TimeSlot;
 import de.jonasrottmann.planerapp.ui.views.HorizontalSpaceItemDecoration;
 
 /**

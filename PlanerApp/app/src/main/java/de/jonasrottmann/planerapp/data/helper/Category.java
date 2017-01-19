@@ -1,4 +1,4 @@
-package de.jonasrottmann.planerapp.data;
+package de.jonasrottmann.planerapp.data.helper;
 
 import android.util.SparseArray;
 
