@@ -23,11 +23,9 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int VIEWTYPE_TEXT = 1;
 
     private final Context context;
-    private final HorizontalSpaceItemDecoration decoration;
 
     public OverviewAdapter(Context context) {
         this.context = context;
-        this.decoration = new HorizontalSpaceItemDecoration(10);
     }
 
     @Override
@@ -42,7 +40,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case VIEWTYPE_COURSES:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_courses_row, parent, false);
                 ViewHolderRecycler holder = new ViewHolderRecycler(itemView);
-                holder.recycler.addItemDecoration(decoration);
+                holder.recycler.addItemDecoration(new HorizontalSpaceItemDecoration(context.getResources().getDimensionPixelSize(R.dimen.recycler_horizontal_margin)));
                 holder.recycler.hasFixedSize();
                 holder.recycler.setNestedScrollingEnabled(false);
                 holder.recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
