@@ -56,7 +56,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((RowViewHolder) holder).getTimeView().setText(TimeSlot.values()[position].toString());
+        ((RowViewHolder) holder).getTimeView().setText(TimeSlot.getTimeSlotForId(position));
         switch (holder.getItemViewType()) {
             case VIEWTYPE_COURSES:
                 //TODO: holder.recycler.getAdapter().setData()
