@@ -36,10 +36,8 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.title.setText("Title");
-        holder.category.setText("Category");
         holder.teacher.setText("Teacher");
         holder.room.setText("Room");
-        holder.time.setText("Time");
         holder.icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.placeholder));
     }
 
@@ -52,14 +50,10 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
     static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.title)
         TextView title;
-        @BindView(R.id.category)
-        TextView category;
         @BindView(R.id.teacher)
         TextView teacher;
         @BindView(R.id.room)
         TextView room;
-        @BindView(R.id.time)
-        TextView time;
         @BindView(R.id.icon)
         ImageView icon;
 
