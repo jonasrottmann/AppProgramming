@@ -110,6 +110,31 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return courses;
     }
 
+    public List<Course> getCourses(int timeslot, int weekday) {
+        List<Course> courses = new LinkedList<>();
+
+        // 1. build the query
+        String query = "SELECT  * FROM " + TABLE_COURSES + " WHERE " + COLUMN_TIMESLOT + "=" + timeslot + " AND " + COLUMN_WEEKDAY + "=" + weekday + ";";
+
+        // 2. get reference to writable DB
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        // 3. go over each row, build course and add it to list
+        Course course;
+        if (cursor.moveToFirst()) {
+            do {
+                course = new Course(cursor.getInt(0), cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getInt(4), Integer.parseInt(cursor.getString(5)), cursor.getInt(6),
+                    cursor.getInt(7));
+                courses.add(course);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+
+        Log.d("getCourses()", courses.toString());
+        return courses;
+    }
+
     public Course updateCourse(Course course) {
         // 1. get reference to writable DB
         SQLiteDatabase db = this.getWritableDatabase();

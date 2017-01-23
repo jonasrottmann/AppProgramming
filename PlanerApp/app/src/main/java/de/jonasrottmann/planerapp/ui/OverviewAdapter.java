@@ -11,6 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
 import de.jonasrottmann.planerapp.data.Course;
+import de.jonasrottmann.planerapp.data.SQLiteHelper;
 import de.jonasrottmann.planerapp.ui.views.HorizontalSpaceItemDecoration;
 
 /**
@@ -23,9 +24,11 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int VIEWTYPE_TEXT = 1;
 
     private final Context context;
+    private final SQLiteHelper sql;
 
     public OverviewAdapter(Context context) {
         this.context = context;
+        sql = new SQLiteHelper(context);
     }
 
     @Override
@@ -39,13 +42,13 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         switch (viewType) {
             case VIEWTYPE_COURSES:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_courses_row, parent, false);
-                ViewHolderRecycler holder = new ViewHolderRecycler(itemView);
-                holder.recycler.addItemDecoration(new HorizontalSpaceItemDecoration(context.getResources().getDimensionPixelSize(R.dimen.recycler_horizontal_margin)));
-                holder.recycler.hasFixedSize();
-                holder.recycler.setNestedScrollingEnabled(false);
-                holder.recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-                holder.recycler.setAdapter(new OverviewRowAdapter(context));
-                return holder;
+                ViewHolderCoursesRow viewHolder = new ViewHolderCoursesRow(itemView);
+                viewHolder.recycler.addItemDecoration(new HorizontalSpaceItemDecoration(context.getResources().getDimensionPixelSize(R.dimen.recycler_horizontal_margin)));
+                viewHolder.recycler.hasFixedSize();
+                viewHolder.recycler.setNestedScrollingEnabled(false);
+                viewHolder.recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
+                viewHolder.recycler.setAdapter(new OverviewRowAdapter(context));
+                return viewHolder;
             case VIEWTYPE_TEXT:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_text, parent, false);
                 return new ViewHolderText(itemView);
@@ -56,10 +59,10 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((RowViewHolder) holder).getTimeView().setText(Course.TimeSlot.getTimeSlotForId(position));
+        ((Row) holder).getTimeView().setText(Course.TimeSlot.getTimeSlotForId(position));
         switch (holder.getItemViewType()) {
             case VIEWTYPE_COURSES:
-                //TODO: holder.recycler.getAdapter().setData()
+                ((OverviewRowAdapter) ((ViewHolderCoursesRow) holder).recycler.getAdapter()).setData(sql.getCourses(position, 0)); // TODO
                 break;
             case VIEWTYPE_TEXT:
                 ((ViewHolderText) holder).text.setText("Mittagspause");
@@ -72,13 +75,13 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return 9;
     }
 
-    static class ViewHolderRecycler extends RecyclerView.ViewHolder implements RowViewHolder {
+    static class ViewHolderCoursesRow extends RecyclerView.ViewHolder implements Row {
         @BindView(R.id.time)
         TextView time;
         @BindView(R.id.recycler)
         RecyclerView recycler;
 
-        ViewHolderRecycler(View itemView) {
+        ViewHolderCoursesRow(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
@@ -89,7 +92,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    static class ViewHolderText extends RecyclerView.ViewHolder implements RowViewHolder {
+    static class ViewHolderText extends RecyclerView.ViewHolder implements Row {
         @BindView(R.id.time)
         TextView time;
         @BindView(R.id.text)
@@ -106,7 +109,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    private interface RowViewHolder {
+    interface Row {
         TextView getTimeView();
     }
 }

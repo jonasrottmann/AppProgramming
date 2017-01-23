@@ -2,7 +2,6 @@ package de.jonasrottmann.planerapp.ui;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +12,8 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
+import de.jonasrottmann.planerapp.data.Course;
+import java.util.List;
 
 /**
  * Created by Jonas Rottmann on 19.01.17.
@@ -21,6 +22,7 @@ import de.jonasrottmann.planerapp.R;
 public class OverviewRowAdapter extends RecyclerView.Adapter<OverviewRowAdapter.ViewHolder> {
 
     private final Context context;
+    private List<Course> courses;
 
     public OverviewRowAdapter(@NonNull Context context) {
         this.context = context;
@@ -37,15 +39,19 @@ public class OverviewRowAdapter extends RecyclerView.Adapter<OverviewRowAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.title.setText("Title");
-        holder.teacher.setText("Teacher");
-        holder.room.setText("Room");
+        holder.title.setText(courses.get(position).getName());
+        holder.teacher.setText(courses.get(position).getTeacher());
+        holder.room.setText(courses.get(position).getRoom());
         holder.icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.placeholder));
+    }
+
+    public void setData(List<Course> courses) {
+        this.courses = courses;
     }
 
     @Override
     public int getItemCount() {
-        return 9;
+        return this.courses == null ? 0 : this.courses.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
