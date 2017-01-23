@@ -60,6 +60,31 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         createCourse(db, new Course("Lesen, schreiben, rechnen", "Hagen, Felix", "USA", 1, 0, 5));
         createCourse(db, new Course("Was interessiert mich", "Sebastian", "Panama", 1, 0, 0));
         createCourse(db, new Course("Chemie III", "Jan", "Mongolei", 2, 0, 6));
+        createCourse(db, new Course("Deutsch Werkstatt", "Doreen, Dörte", "Japan", 2, 0, 5));
+        createCourse(db, new Course("Garten", "Alex", "Garten", 2, 0, 1));
+        createCourse(db, new Course("Kochen", "Pamela", "Hawaï Küche", 2, 0, 1));
+        createCourse(db, new Course("Kritisches Denken", "Henrik", "Bhutan", 2, 0, 0));
+        createCourse(db, new Course("Mathe Werkstatt", "Auré", "Tibet", 2, 0, 0));
+        createCourse(db, new Course("Physik I", "Martin", "Indien", 2, 0, 6));
+        createCourse(db, new Course("Schach", "Olaf", "Mexico", 2, 0, 0));
+        createCourse(db, new Course("Schmuck", "Grit-Ute", "China", 2, 0, 1));
+        createCourse(db, new Course("Sport bis 3. Klasse", "Hagen", null, 2, 0, 4));
+        createCourse(db, new Course("Flexizeit", null, null, 3, 0, 7));
+        createCourse(db, new Course("Kochen", "Pamela", "Hawaï Küche", 3, 0, 1));
+        createCourse(db, new Course("Lernbüro", null, "Tibet", 3, 0, 7));
+        createCourse(db, new Course("Schach", "Olaf", "Mexico", 3, 0, 0));
+        createCourse(db, new Course("Schmuck", "Grit-Ute", "China", 3, 0, 1));
+        createCourse(db, new Course("Sport ab 4. Klasse", "Hagen", null, 3, 0, 4));
+        createCourse(db, new Course("VZK", "Sebastian, Felix", "Malaysia", 3, 0, 7));
+        createCourse(db, new Course("Chemie II", "Jan", "Mongolei", 5, 0, 6));
+        createCourse(db, new Course("Englisch - Grundschule", "Daniela", "Panama", 5, 0, 5));
+        createCourse(db, new Course("Grundschul-Teamtreff", null, null, 5, 0, 7));
+        createCourse(db, new Course("Japanisch", "Atsuko", "China", 5, 0, 5));
+        createCourse(db, new Course("Nähen", "Dörte", "Nähzimmer", 5, 0, 1));
+        createCourse(db, new Course("Englisch - Grundschule", "Daniela", "Panama", 6, 0, 5));
+        createCourse(db, new Course("Gemeinschaftskunde", "Paula", "Tibet", 6, 0, 3));
+        createCourse(db, new Course("Japanisch", "Atsuko", "China", 6, 0, 5));
+        createCourse(db, new Course("Gemeinschaftskunde", "Paula", "Tibet", 7, 0, 3));
     }
 
     @Override
