@@ -17,6 +17,9 @@ public class Course {
     private int category;
     private int starred;
 
+    /**
+     * Used when querying {@link Course}s from the database.
+     */
     Course(int id, String name, String teacher, String room, int timeslot, int weekday, int category, int starred) {
         this.id = id;
         this.name = name;
@@ -28,6 +31,9 @@ public class Course {
         this.starred = starred;
     }
 
+    /**
+     * Used to add {@link Course} to database. Id and starred aren't passed because they have default values.
+     */
     Course(String name, String teacher, String room, int timeslot, int weekday, int category) {
         this.id = null;
         this.name = name;

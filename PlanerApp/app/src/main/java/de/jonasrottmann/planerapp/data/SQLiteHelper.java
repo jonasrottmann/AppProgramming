@@ -17,7 +17,7 @@ import java.util.List;
 public class SQLiteHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "seed.db";
+    private static final String DATABASE_NAME = "courses.db";
     private static final String TABLE_COURSES = "course";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_NAME = "name";
@@ -35,6 +35,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        // Create schema
         String CREATE_COURSE_TABLE = "CREATE TABLE IF NOT EXISTS \""
             + TABLE_COURSES
             + "\" (\n"
@@ -49,12 +50,16 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             + ");";
         db.execSQL(CREATE_COURSE_TABLE);
 
+        // Create seed database entries
         createCourse(db, new Course("Asien-Versammlung", null, "Russland", 0, 0, 7));
         createCourse(db, new Course("Chemie III", "Jan", "Mongolei", 1, 0, 6));
         createCourse(db, new Course("Deutsch Werkstatt", "Doreen, Dörte", "Japan", 1, 0, 5));
         createCourse(db, new Course("Garten", "Alex", "Garten", 1, 0, 1));
         createCourse(db, new Course("Impro-Theater", "Julia", "Russland", 1, 0, 1));
         createCourse(db, new Course("Kochen", "Pamela", "Hawaï Küche", 1, 0, 1));
+        createCourse(db, new Course("Lesen, schreiben, rechnen", "Hagen, Felix", "USA", 1, 0, 5));
+        createCourse(db, new Course("Was interessiert mich", "Sebastian", "Panama", 1, 0, 0));
+        createCourse(db, new Course("Chemie III", "Jan", "Mongolei", 2, 0, 6));
     }
 
     @Override
