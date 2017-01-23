@@ -1,6 +1,8 @@
 package de.jonasrottmann.planerapp.ui;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,7 +22,7 @@ public class OverviewRowAdapter extends RecyclerView.Adapter<OverviewRowAdapter.
 
     private final Context context;
 
-    public OverviewRowAdapter(Context context) {
+    public OverviewRowAdapter(@NonNull Context context) {
         this.context = context;
     }
 
@@ -56,7 +58,7 @@ public class OverviewRowAdapter extends RecyclerView.Adapter<OverviewRowAdapter.
         @BindView(R.id.icon)
         ImageView icon;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(@NonNull final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
-import de.jonasrottmann.planerapp.data.helper.TimeSlot;
+import de.jonasrottmann.planerapp.data.Course;
 import de.jonasrottmann.planerapp.ui.views.HorizontalSpaceItemDecoration;
 
 /**
@@ -56,7 +56,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((RowViewHolder) holder).getTimeView().setText(TimeSlot.getTimeSlotForId(position));
+        ((RowViewHolder) holder).getTimeView().setText(Course.TimeSlot.getTimeSlotForId(position));
         switch (holder.getItemViewType()) {
             case VIEWTYPE_COURSES:
                 //TODO: holder.recycler.getAdapter().setData()
