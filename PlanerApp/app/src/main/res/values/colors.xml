@@ -2,8 +2,15 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#434343</color>
 
-    <color name="white80">#CCFFFFFF</color>
+    <color name="cat0">#283687</color>
+    <color name="cat1">#863737</color>
+    <color name="cat2">#c47d2e</color>
+    <color name="cat3">#9e5098</color>
+    <color name="cat4">#815f38</color>
+    <color name="cat5">#62a151</color>
+    <color name="cat6">#cabd28</color>
+    <color name="cat7">#356967</color>
 
 </resources>

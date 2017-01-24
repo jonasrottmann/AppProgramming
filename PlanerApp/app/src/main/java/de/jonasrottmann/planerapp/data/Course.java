@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.SparseArray;
+import de.jonasrottmann.planerapp.R;
 
 /**
  * Created by Jonas Rottmann on 19.01.17.
@@ -139,6 +140,7 @@ public class Course implements Parcelable {
         }
 
         private static final SparseArray<String> categoryStrings = new SparseArray<>();
+        private static final SparseArray<Integer> categoryColor = new SparseArray<>();
 
         static {
             categoryStrings.append(0, "Denken");
@@ -149,10 +151,23 @@ public class Course implements Parcelable {
             categoryStrings.append(5, "Deutsch und Fremdsprachen");
             categoryStrings.append(6, "Wissenschaften");
             categoryStrings.append(7, "Sonstiges");
+
+            categoryColor.append(0, R.color.cat0);
+            categoryColor.append(1, R.color.cat1);
+            categoryColor.append(2, R.color.cat2);
+            categoryColor.append(3, R.color.cat3);
+            categoryColor.append(4, R.color.cat4);
+            categoryColor.append(5, R.color.cat5);
+            categoryColor.append(6, R.color.cat6);
+            categoryColor.append(7, R.color.cat7);
         }
 
         public static String getCategoryStringForId(int id) {
             return categoryStrings.get(id);
+        }
+
+        public static int getCategoryColorForId(int id) {
+            return categoryColor.get(id);
         }
     }
 

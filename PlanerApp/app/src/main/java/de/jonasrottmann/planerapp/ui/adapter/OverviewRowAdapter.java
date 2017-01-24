@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +15,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
 import de.jonasrottmann.planerapp.data.Course;
-import java.util.List;
 
 /**
  * Created by Jonas Rottmann on 19.01.17.
@@ -40,12 +40,9 @@ class OverviewRowAdapter extends CursorRecyclerViewAdapter<OverviewRowAdapter.Vi
         return new ViewHolder(itemView);
     }
 
-    public void setData(List<Course> courses) {
-        notifyDataSetChanged();
-    }
-
     @Override
     public void onBindViewHolder(ViewHolder holder, Cursor cursor) {
+        holder.card.setCardBackgroundColor(ContextCompat.getColor(context, Course.Category.getCategoryColorForId(cursor.getInt(6))));
         holder.title.setText(cursor.getString(1));
         holder.teacher.setText(cursor.getString(2));
         holder.room.setText(cursor.getString(3));
@@ -61,6 +58,8 @@ class OverviewRowAdapter extends CursorRecyclerViewAdapter<OverviewRowAdapter.Vi
         TextView room;
         @BindView(R.id.icon)
         ImageView icon;
+        @BindView(R.id.card)
+        CardView card;
 
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);
