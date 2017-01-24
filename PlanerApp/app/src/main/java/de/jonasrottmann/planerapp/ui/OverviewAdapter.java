@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +16,6 @@ import de.jonasrottmann.planerapp.R;
 import de.jonasrottmann.planerapp.data.Course;
 import de.jonasrottmann.planerapp.ui.fragments.OverviewFragment;
 import de.jonasrottmann.planerapp.ui.views.HorizontalSpaceItemDecoration;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Jonas Rottmann on 19.01.17.
@@ -30,7 +29,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final OverviewFragment.Contract contract;
     private final Context context;
 
-    private Map<Integer, Parcelable> scrollStatePositionsMap = new HashMap<>();
+    private SparseArray<Parcelable> scrollStatePositionsMap = new SparseArray<>();
 
     public OverviewAdapter(Context context, OverviewFragment.Contract contract) {
         this.contract = contract;
@@ -78,7 +77,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case VIEWTYPE_COURSES:
                 ((OverviewRowAdapter) ((ViewHolderCoursesRow) holder).recycler.getAdapter()).setData(contract.getCourses(holder.getAdapterPosition(), 0));
                 // Restore scroll position
-                if (scrollStatePositionsMap.containsKey(holder.getAdapterPosition())) {
+                if (scrollStatePositionsMap.get(holder.getAdapterPosition()) != null) {
                     ((ViewHolderCoursesRow) holder).recycler.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                         @Override
                         public boolean onPreDraw() {
@@ -106,7 +105,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @BindView(R.id.recycler)
         RecyclerView recycler;
 
-        ViewHolderCoursesRow(View itemView, final Map<Integer, Parcelable> scrollStatePositionsMap) {
+        ViewHolderCoursesRow(View itemView, final SparseArray<Parcelable> scrollStatePositionsMap) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
