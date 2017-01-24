@@ -23,9 +23,11 @@ public class OverviewRowAdapter extends RecyclerView.Adapter<OverviewRowAdapter.
 
     private final Context context;
     private List<Course> courses;
+    private View.OnClickListener listener;
 
-    public OverviewRowAdapter(@NonNull Context context) {
+    public OverviewRowAdapter(@NonNull Context context, View.OnClickListener onClickListener) {
         this.context = context;
+        this.listener = onClickListener;
     }
 
     @Override
@@ -33,7 +35,7 @@ public class OverviewRowAdapter extends RecyclerView.Adapter<OverviewRowAdapter.
         View itemView = LayoutInflater.
             from(parent.getContext()).
             inflate(R.layout.item_course, parent, false);
-
+        itemView.setOnClickListener(this.listener);
         return new ViewHolder(itemView);
     }
 
@@ -47,6 +49,11 @@ public class OverviewRowAdapter extends RecyclerView.Adapter<OverviewRowAdapter.
 
     public void setData(List<Course> courses) {
         this.courses = courses;
+        notifyDataSetChanged();
+    }
+
+    public List<Course> getData() {
+        return courses;
     }
 
     @Override

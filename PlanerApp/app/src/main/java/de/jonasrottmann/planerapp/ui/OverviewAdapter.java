@@ -11,7 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
 import de.jonasrottmann.planerapp.data.Course;
-import de.jonasrottmann.planerapp.data.SQLiteHelper;
+import de.jonasrottmann.planerapp.ui.fragments.OverviewFragment;
 import de.jonasrottmann.planerapp.ui.views.HorizontalSpaceItemDecoration;
 
 /**
@@ -23,12 +23,12 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int VIEWTYPE_COURSES = 0;
     private static final int VIEWTYPE_TEXT = 1;
 
+    private final OverviewFragment.Contract contract;
     private final Context context;
-    private final SQLiteHelper sql;
 
-    public OverviewAdapter(Context context) {
+    public OverviewAdapter(Context context, OverviewFragment.Contract contract) {
+        this.contract = contract;
         this.context = context;
-        sql = new SQLiteHelper(context);
     }
 
     @Override
@@ -42,12 +42,20 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         switch (viewType) {
             case VIEWTYPE_COURSES:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_courses_row, parent, false);
-                ViewHolderCoursesRow viewHolder = new ViewHolderCoursesRow(itemView);
+                final ViewHolderCoursesRow viewHolder = new ViewHolderCoursesRow(itemView);
                 viewHolder.recycler.addItemDecoration(new HorizontalSpaceItemDecoration(context.getResources().getDimensionPixelSize(R.dimen.recycler_horizontal_margin)));
                 viewHolder.recycler.hasFixedSize();
                 viewHolder.recycler.setNestedScrollingEnabled(false);
                 viewHolder.recycler.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false));
-                viewHolder.recycler.setAdapter(new OverviewRowAdapter(context));
+                viewHolder.recycler.setAdapter(new OverviewRowAdapter(context, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        int pos = viewHolder.recycler.getChildAdapterPosition(v);
+                        OverviewRowAdapter adapter = (OverviewRowAdapter) viewHolder.recycler.getAdapter();
+                        Course course = adapter.getData().get(pos);
+                        contract.onCourseClicked(course);
+                    }
+                }));
                 return viewHolder;
             case VIEWTYPE_TEXT:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_text, parent, false);
@@ -62,7 +70,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         ((Row) holder).getTimeView().setText(Course.TimeSlot.getTimeSlotForId(position));
         switch (holder.getItemViewType()) {
             case VIEWTYPE_COURSES:
-                ((OverviewRowAdapter) ((ViewHolderCoursesRow) holder).recycler.getAdapter()).setData(sql.getCourses(position, 0)); // TODO
+                ((OverviewRowAdapter) ((ViewHolderCoursesRow) holder).recycler.getAdapter()).setData(contract.getCourses(position, 0));
                 break;
             case VIEWTYPE_TEXT:
                 ((ViewHolderText) holder).text.setText("Mittagspause");

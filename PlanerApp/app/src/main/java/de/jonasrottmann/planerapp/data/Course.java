@@ -1,12 +1,14 @@
 package de.jonasrottmann.planerapp.data;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.SparseArray;
 
 /**
  * Created by Jonas Rottmann on 19.01.17.
  * Copyright © 2017 fluidmobile. All rights reserved.
  */
-public class Course {
+public class Course implements Parcelable {
 
     private Integer id;
     private String name;
@@ -82,8 +84,8 @@ public class Course {
         return category;
     }
 
-    public int getStarred() {
-        return starred;
+    public boolean getStarred() {
+        return starred != 0;
     }
 
     public void setStarred(boolean starred) {
@@ -136,4 +138,53 @@ public class Course {
             return categories.get(id);
         }
     }
+
+
+    //region Parcelable
+    private Course(Parcel in) {
+        id = in.readByte() == 0x00 ? null : in.readInt();
+        name = in.readString();
+        teacher = in.readString();
+        room = in.readString();
+        timeslot = in.readInt();
+        weekday = in.readInt();
+        category = in.readInt();
+        starred = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(id);
+        }
+        dest.writeString(name);
+        dest.writeString(teacher);
+        dest.writeString(room);
+        dest.writeInt(timeslot);
+        dest.writeInt(weekday);
+        dest.writeInt(category);
+        dest.writeInt(starred);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Course> CREATOR = new Parcelable.Creator<Course>() {
+        @Override
+        public Course createFromParcel(Parcel in) {
+            return new Course(in);
+        }
+
+        @Override
+        public Course[] newArray(int size) {
+            return new Course[size];
+        }
+    };
+    //endregion
 }
