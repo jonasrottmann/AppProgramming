@@ -2,6 +2,9 @@ package de.jonasrottmann.planerapp.ui.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.ColorFilter;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -47,6 +50,9 @@ class OverviewRowAdapter extends CursorRecyclerViewAdapter<OverviewRowAdapter.Vi
         holder.teacher.setText(cursor.getString(2));
         holder.room.setText(cursor.getString(3));
         holder.icon.setImageDrawable(ContextCompat.getDrawable(context, cursor.getInt(8)));
+        holder.star.setVisibility(cursor.getInt(7) == 0 ? View.GONE : View.VISIBLE);
+        ColorFilter colorFilter = new PorterDuffColorFilter(ContextCompat.getColor(context, Course.Category.getCategoryColorForId(cursor.getInt(6))), PorterDuff.Mode.SRC_ATOP);
+        holder.star.setColorFilter(colorFilter);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -60,6 +66,8 @@ class OverviewRowAdapter extends CursorRecyclerViewAdapter<OverviewRowAdapter.Vi
         ImageView icon;
         @BindView(R.id.card)
         CardView card;
+        @BindView(R.id.star)
+        ImageView star;
 
         public ViewHolder(@NonNull final View itemView) {
             super(itemView);
