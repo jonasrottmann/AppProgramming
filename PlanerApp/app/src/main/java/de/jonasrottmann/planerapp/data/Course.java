@@ -10,6 +10,17 @@ import android.util.SparseArray;
  */
 public class Course implements Parcelable {
 
+    public static final String TABLE_COURSES = "course";
+    public static final String COLUMN_ID = "id";
+    public static final String COLUMN_NAME = "name";
+    public static final String COLUMN_TEACHER = "teacher";
+    public static final String COLUMN_ROOM = "room";
+    public static final String COLUMN_TIMESLOT = "timeslot";
+    public static final String COLUMN_WEEKDAY = "weekday";
+    public static final String COLUMN_CAT = "category";
+    public static final String COLUMN_STAR = "starred";
+    public static final String[] COLUMNS = { COLUMN_ID, COLUMN_NAME, COLUMN_TEACHER, COLUMN_ROOM, COLUMN_TIMESLOT, COLUMN_WEEKDAY, COLUMN_CAT, COLUMN_STAR };
+
     private Integer id;
     private String name;
     private String teacher;

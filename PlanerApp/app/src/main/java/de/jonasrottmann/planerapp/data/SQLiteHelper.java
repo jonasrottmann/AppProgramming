@@ -10,6 +10,17 @@ import android.util.Log;
 import java.util.LinkedList;
 import java.util.List;
 
+import static de.jonasrottmann.planerapp.data.Course.COLUMNS;
+import static de.jonasrottmann.planerapp.data.Course.COLUMN_CAT;
+import static de.jonasrottmann.planerapp.data.Course.COLUMN_ID;
+import static de.jonasrottmann.planerapp.data.Course.COLUMN_NAME;
+import static de.jonasrottmann.planerapp.data.Course.COLUMN_ROOM;
+import static de.jonasrottmann.planerapp.data.Course.COLUMN_STAR;
+import static de.jonasrottmann.planerapp.data.Course.COLUMN_TEACHER;
+import static de.jonasrottmann.planerapp.data.Course.COLUMN_TIMESLOT;
+import static de.jonasrottmann.planerapp.data.Course.COLUMN_WEEKDAY;
+import static de.jonasrottmann.planerapp.data.Course.TABLE_COURSES;
+
 /**
  * Created by Jonas Rottmann on 23.01.17.
  * Copyright © 2017 fluidmobile. All rights reserved.
@@ -18,16 +29,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "courses.db";
-    private static final String TABLE_COURSES = "course";
-    private static final String COLUMN_ID = "id";
-    private static final String COLUMN_NAME = "name";
-    private static final String COLUMN_TEACHER = "teacher";
-    private static final String COLUMN_ROOM = "room";
-    private static final String COLUMN_TIMESLOT = "timeslot";
-    private static final String COLUMN_WEEKDAY = "weekday";
-    private static final String COLUMN_CAT = "category";
-    private static final String COLUMN_STAR = "starred";
-    private static final String[] COLUMNS = { COLUMN_ID, COLUMN_NAME, COLUMN_TEACHER, COLUMN_ROOM, COLUMN_TIMESLOT, COLUMN_WEEKDAY, COLUMN_CAT, COLUMN_STAR };
+
 
     public SQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
