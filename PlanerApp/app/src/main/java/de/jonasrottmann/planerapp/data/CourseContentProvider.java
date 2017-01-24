@@ -44,6 +44,7 @@ public class CourseContentProvider extends android.content.ContentProvider {
                 cursor = database.getCourse(Integer.parseInt(uri.getPathSegments().get(1)), projection, selection, selectionArgs, sortOrder);
                 break;
             case COURSES:
+                sortOrder = Course.COLUMN_STAR + " DESC"; // return starred coursed first
                 cursor = database.getAllCourses(projection, selection, selectionArgs, sortOrder);
                 break;
             default:
@@ -72,6 +73,7 @@ public class CourseContentProvider extends android.content.ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
+        // TODO nur eine veranstaltung pro weekday&timeslot kann markiert werden!
         if (URI_MATCHER.match(uri) == COURSE_ID) {
             int id = Integer.parseInt(uri.getPathSegments().get(1));
             int count = database.updateCourse(id, values);
