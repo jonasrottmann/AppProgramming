@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -97,7 +96,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         this.onCreate(db);
     }
 
-    private Course createCourse(@NonNull SQLiteDatabase db, @NonNull Course course) {
+    private void createCourse(@NonNull SQLiteDatabase db, @NonNull Course course) {
         // 1. create ContentValues to add key "column"/value
         ContentValues values = new ContentValues();
         values.put(COLUMN_NAME, course.getName());
@@ -108,8 +107,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put(COLUMN_CAT, course.getCategory());
         // 2. insert
         db.insert(TABLE_COURSES, null, values);
-
-        return course;
     }
 
     public List<Course> getAllCourses() {

@@ -23,7 +23,7 @@ class OverviewRowAdapter extends RecyclerView.Adapter<OverviewRowAdapter.ViewHol
 
     private final Context context;
     private List<Course> courses;
-    private View.OnClickListener listener;
+    private final View.OnClickListener listener;
 
     OverviewRowAdapter(@NonNull Context context, View.OnClickListener onClickListener) {
         this.context = context;

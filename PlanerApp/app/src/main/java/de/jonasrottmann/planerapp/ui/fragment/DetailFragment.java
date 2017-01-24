@@ -24,8 +24,8 @@ import de.jonasrottmann.planerapp.data.Course;
  */
 public class DetailFragment extends ContractFragment<DetailFragment.Contract> {
 
-    public static final String EXTRA_COURSE = "EXTRA_COURSE";
-    public static final String EXTRA_TWO_PANE = "EXTRA_TWO_PANE";
+    private static final String EXTRA_COURSE = "EXTRA_COURSE";
+    private static final String EXTRA_TWO_PANE = "EXTRA_TWO_PANE";
     private boolean isTwoPain;
     @Nullable
     private Course course;

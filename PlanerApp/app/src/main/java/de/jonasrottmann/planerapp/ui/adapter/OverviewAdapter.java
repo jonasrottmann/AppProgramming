@@ -29,7 +29,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final OverviewFragment.Contract contract;
     private final Context context;
 
-    private SparseArray<Parcelable> scrollStatePositionsMap = new SparseArray<>();
+    private final SparseArray<Parcelable> scrollStatePositionsMap = new SparseArray<>();
 
     public OverviewAdapter(Context context, OverviewFragment.Contract contract) {
         this.contract = contract;

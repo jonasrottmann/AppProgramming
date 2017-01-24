@@ -10,8 +10,8 @@ import android.util.SparseArray;
  */
 public class Course implements Parcelable {
 
-    public static final String TABLE_COURSES = "course";
-    public static final String COLUMN_ID = "id";
+    static final String TABLE_COURSES = "course";
+    static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_TEACHER = "teacher";
     public static final String COLUMN_ROOM = "room";
@@ -21,13 +21,13 @@ public class Course implements Parcelable {
     public static final String COLUMN_STAR = "starred";
     public static final String[] COLUMNS = { COLUMN_ID, COLUMN_NAME, COLUMN_TEACHER, COLUMN_ROOM, COLUMN_TIMESLOT, COLUMN_WEEKDAY, COLUMN_CAT, COLUMN_STAR };
 
-    private Integer id;
-    private String name;
-    private String teacher;
-    private String room;
-    private int timeslot;
-    private int weekday;
-    private int category;
+    private final Integer id;
+    private final String name;
+    private final String teacher;
+    private final String room;
+    private final int timeslot;
+    private final int weekday;
+    private final int category;
     private int starred;
 
     /**
@@ -108,7 +108,7 @@ public class Course implements Parcelable {
         private TimeSlot() {
         }
 
-        private static SparseArray<String> timeSlots = new SparseArray<>();
+        private static final SparseArray<String> timeSlots = new SparseArray<>();
 
         static {
             timeSlots.append(0, "08:30");
@@ -132,7 +132,7 @@ public class Course implements Parcelable {
         private Category() {
         }
 
-        private static SparseArray<String> categories = new SparseArray<>();
+        private static final SparseArray<String> categories = new SparseArray<>();
 
         static {
             categories.append(0, "Denken");
