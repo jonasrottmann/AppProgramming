@@ -1,4 +1,4 @@
-package de.jonasrottmann.planerapp.ui;
+package de.jonasrottmann.planerapp.ui.adapter;
 
 import android.content.Context;
 import android.os.Parcelable;
@@ -14,7 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
 import de.jonasrottmann.planerapp.data.Course;
-import de.jonasrottmann.planerapp.ui.fragments.OverviewFragment;
+import de.jonasrottmann.planerapp.ui.fragment.OverviewFragment;
 import de.jonasrottmann.planerapp.ui.views.HorizontalSpaceItemDecoration;
 
 /**
@@ -99,7 +99,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return 9;
     }
 
-    static class ViewHolderCoursesRow extends RecyclerView.ViewHolder implements Row {
+    private static class ViewHolderCoursesRow extends RecyclerView.ViewHolder implements Row {
         @BindView(R.id.time)
         TextView time;
         @BindView(R.id.recycler)
@@ -132,7 +132,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    static class ViewHolderText extends RecyclerView.ViewHolder implements Row {
+    private static class ViewHolderText extends RecyclerView.ViewHolder implements Row {
         @BindView(R.id.time)
         TextView time;
         @BindView(R.id.text)

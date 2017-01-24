@@ -10,8 +10,8 @@ import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
 import de.jonasrottmann.planerapp.data.Course;
 import de.jonasrottmann.planerapp.data.SQLiteHelper;
-import de.jonasrottmann.planerapp.ui.fragments.DetailFragment;
-import de.jonasrottmann.planerapp.ui.fragments.OverviewFragment;
+import de.jonasrottmann.planerapp.ui.fragment.DetailFragment;
+import de.jonasrottmann.planerapp.ui.fragment.OverviewFragment;
 import java.util.List;
 
 /**

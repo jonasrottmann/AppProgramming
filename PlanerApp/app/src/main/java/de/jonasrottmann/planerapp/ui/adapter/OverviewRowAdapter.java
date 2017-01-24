@@ -1,4 +1,4 @@
-package de.jonasrottmann.planerapp.ui;
+package de.jonasrottmann.planerapp.ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -19,13 +19,13 @@ import java.util.List;
  * Created by Jonas Rottmann on 19.01.17.
  * Copyright © 2017 fluidmobile. All rights reserved.
  */
-public class OverviewRowAdapter extends RecyclerView.Adapter<OverviewRowAdapter.ViewHolder> {
+class OverviewRowAdapter extends RecyclerView.Adapter<OverviewRowAdapter.ViewHolder> {
 
     private final Context context;
     private List<Course> courses;
     private View.OnClickListener listener;
 
-    public OverviewRowAdapter(@NonNull Context context, View.OnClickListener onClickListener) {
+    OverviewRowAdapter(@NonNull Context context, View.OnClickListener onClickListener) {
         this.context = context;
         this.listener = onClickListener;
     }

@@ -1,4 +1,4 @@
-package de.jonasrottmann.planerapp.ui.fragments;
+package de.jonasrottmann.planerapp.ui.fragment;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;

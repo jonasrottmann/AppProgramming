@@ -1,4 +1,4 @@
-package de.jonasrottmann.planerapp.ui.fragments;
+package de.jonasrottmann.planerapp.ui.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import de.jonasrottmann.planerapp.R;
 import de.jonasrottmann.planerapp.data.Course;
-import de.jonasrottmann.planerapp.ui.OverviewAdapter;
+import de.jonasrottmann.planerapp.ui.adapter.OverviewAdapter;
 import java.util.List;
 
 /**
