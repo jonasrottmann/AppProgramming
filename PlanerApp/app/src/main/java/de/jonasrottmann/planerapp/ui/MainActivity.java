@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
 
     @Override
     public void onCourseClicked(int id) {
-        Cursor cursor = getContentResolver().query(CourseContentProvider.CONTENT_URI, Course.COLUMNS, Course.COLUMN_ID + "= ?", new String[] { String.valueOf(id) }, null);
+        Cursor cursor = getContentResolver().query(ContentUris.withAppendedId(CourseContentProvider.CONTENT_URI, id), Course.COLUMNS, null, null, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 Course course = new Course(cursor); // Build data object from cursor
@@ -72,8 +72,13 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
         values.put(Course.COLUMN_STAR, course.getStarred() ? 0 : 1);
         getContentResolver().update(ContentUris.withAppendedId(CourseContentProvider.CONTENT_URI, course.getId()), values, null, null);
 
-        // Update passed course...
-        course.setStarred(!course.getStarred());
+        // Requery the course
+        Cursor cursor = getContentResolver().query(ContentUris.withAppendedId(CourseContentProvider.CONTENT_URI, course.getId()), Course.COLUMNS, null, null, null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                course = new Course(cursor);
+            }
+        }
 
         // TODO set notifications...
         //...
