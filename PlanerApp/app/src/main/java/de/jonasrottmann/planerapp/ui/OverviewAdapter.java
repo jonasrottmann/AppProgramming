@@ -1,11 +1,13 @@
 package de.jonasrottmann.planerapp.ui;
 
 import android.content.Context;
+import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -13,6 +15,8 @@ import de.jonasrottmann.planerapp.R;
 import de.jonasrottmann.planerapp.data.Course;
 import de.jonasrottmann.planerapp.ui.fragments.OverviewFragment;
 import de.jonasrottmann.planerapp.ui.views.HorizontalSpaceItemDecoration;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Jonas Rottmann on 19.01.17.
@@ -25,6 +29,8 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private final OverviewFragment.Contract contract;
     private final Context context;
+
+    private Map<Integer, Parcelable> scrollStatePositionsMap = new HashMap<>();
 
     public OverviewAdapter(Context context, OverviewFragment.Contract contract) {
         this.contract = contract;
@@ -42,7 +48,7 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         switch (viewType) {
             case VIEWTYPE_COURSES:
                 itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_courses_row, parent, false);
-                final ViewHolderCoursesRow viewHolder = new ViewHolderCoursesRow(itemView);
+                final ViewHolderCoursesRow viewHolder = new ViewHolderCoursesRow(itemView, scrollStatePositionsMap);
                 viewHolder.recycler.addItemDecoration(new HorizontalSpaceItemDecoration(context.getResources().getDimensionPixelSize(R.dimen.recycler_horizontal_margin)));
                 viewHolder.recycler.hasFixedSize();
                 viewHolder.recycler.setNestedScrollingEnabled(false);
@@ -66,11 +72,22 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((Row) holder).getTimeView().setText(Course.TimeSlot.getTimeSlotForId(position));
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        ((Row) holder).getTimeView().setText(Course.TimeSlot.getTimeSlotForId(holder.getAdapterPosition()));
         switch (holder.getItemViewType()) {
             case VIEWTYPE_COURSES:
-                ((OverviewRowAdapter) ((ViewHolderCoursesRow) holder).recycler.getAdapter()).setData(contract.getCourses(position, 0));
+                ((OverviewRowAdapter) ((ViewHolderCoursesRow) holder).recycler.getAdapter()).setData(contract.getCourses(holder.getAdapterPosition(), 0));
+                // Restore scroll position
+                if (scrollStatePositionsMap.containsKey(holder.getAdapterPosition())) {
+                    ((ViewHolderCoursesRow) holder).recycler.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                        @Override
+                        public boolean onPreDraw() {
+                            ((ViewHolderCoursesRow) holder).recycler.getViewTreeObserver().removeOnPreDrawListener(this);
+                            ((ViewHolderCoursesRow) holder).recycler.getLayoutManager().onRestoreInstanceState(scrollStatePositionsMap.get(holder.getAdapterPosition()));
+                            return false;
+                        }
+                    });
+                }
                 break;
             case VIEWTYPE_TEXT:
                 ((ViewHolderText) holder).text.setText("Mittagspause");
@@ -89,9 +106,25 @@ public class OverviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         @BindView(R.id.recycler)
         RecyclerView recycler;
 
-        ViewHolderCoursesRow(View itemView) {
+        ViewHolderCoursesRow(View itemView, final Map<Integer, Parcelable> scrollStatePositionsMap) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
+            // Used to restore scroll position
+            recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+                }
+
+                @Override
+                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                    super.onScrollStateChanged(recyclerView, newState);
+                    if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                        scrollStatePositionsMap.put(getAdapterPosition(), recyclerView.getLayoutManager().onSaveInstanceState());
+                    }
+                }
+            });
         }
 
         @Override

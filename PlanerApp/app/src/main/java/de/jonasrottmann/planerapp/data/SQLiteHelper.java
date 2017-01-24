@@ -133,7 +133,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
         cursor.close();
 
-        Log.d("getAllCourses()", courses.toString());
         return courses;
     }
 
@@ -158,7 +157,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         }
         cursor.close();
 
-        Log.d("getCourses()", courses.toString());
         return courses;
     }
 
@@ -194,8 +192,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             // 4. close
             cursor.close();
             db.close();
-
-            Log.d("updateCourse()", course.toString());
 
             return course;
         } else {
