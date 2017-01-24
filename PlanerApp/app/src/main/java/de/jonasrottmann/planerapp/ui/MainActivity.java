@@ -36,14 +36,14 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        isInTwoPaneLayout = (container2 != null);
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.container1, OverviewFragment.getInstance()).commit();
-        if (isInTwoPaneLayout) {
-            // getSupportFragmentManager().beginTransaction().replace(R.id.container2, DetailFragment.getInstance(null)).commit(); // TODO set current course as default?
-        }
-
+        // Setup database
         database = new SQLiteHelper(this);
+
+        // Setup fragments
+        getSupportFragmentManager().beginTransaction().replace(R.id.container1, OverviewFragment.getInstance()).commit();
+        if (isInTwoPaneLayout = (container2 != null)) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container2, DetailFragment.getInstance(null, true)).commit();
+        }
     }
 
     @Override
@@ -55,9 +55,9 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
     @Override
     public void onCourseClicked(@NonNull Course course) {
         if (isInTwoPaneLayout) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container2, DetailFragment.getInstance(course)).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container2, DetailFragment.getInstance(course, true)).commit();
         } else {
-            getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.container1, DetailFragment.getInstance(course)).commit();
+            getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.container1, DetailFragment.getInstance(course, false)).commit();
         }
     }
 
