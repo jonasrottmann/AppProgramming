@@ -25,8 +25,6 @@ import de.jonasrottmann.planerapp.data.Course;
 public class DetailFragment extends ContractFragment<DetailFragment.Contract> {
 
     private static final String EXTRA_COURSE = "EXTRA_COURSE";
-    private static final String EXTRA_TWO_PANE = "EXTRA_TWO_PANE";
-    private boolean isTwoPain;
     @Nullable
     private Course course;
     @BindView(R.id.fab)
@@ -39,10 +37,9 @@ public class DetailFragment extends ContractFragment<DetailFragment.Contract> {
     CollapsingToolbarLayout collapsing;
 
     @NonNull
-    public static DetailFragment getInstance(@Nullable Course course, boolean isTwoPane) {
+    public static DetailFragment getInstance(@Nullable Course course) {
         Bundle bundle = new Bundle();
         bundle.putParcelable(EXTRA_COURSE, course);
-        bundle.putBoolean(EXTRA_TWO_PANE, isTwoPane);
         DetailFragment fragment = new DetailFragment();
         fragment.setArguments(bundle);
         return fragment;
@@ -60,7 +57,6 @@ public class DetailFragment extends ContractFragment<DetailFragment.Contract> {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.course = getArguments().getParcelable(EXTRA_COURSE);
-        this.isTwoPain = getArguments().getBoolean(EXTRA_TWO_PANE);
         setHasOptionsMenu(true);
     }
 
@@ -78,7 +74,7 @@ public class DetailFragment extends ContractFragment<DetailFragment.Contract> {
             // Setup toolbar
             collapsing.setTitle(course.getName());
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-            if (!this.isTwoPain) {
+            if (getActivity().getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
             }

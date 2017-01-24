@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 import butterknife.BindView;
@@ -39,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
         // Setup fragments
         getSupportFragmentManager().beginTransaction().replace(R.id.container1, OverviewFragment.getInstance()).commit();
         if (isInTwoPaneLayout = (container2 != null)) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container2, DetailFragment.getInstance(null, true)).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container2, DetailFragment.getInstance(null)).commit();
         }
     }
 
@@ -48,12 +50,16 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
         Cursor cursor = getContentResolver().query(CourseContentProvider.CONTENT_URI, Course.COLUMNS, Course.COLUMN_ID + "= ?", new String[] { String.valueOf(id) }, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                Course course = new Course(cursor);
-                if (isInTwoPaneLayout) {
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container2, DetailFragment.getInstance(course, true)).commit();
+                Course course = new Course(cursor); // Build data object from cursor
+                Fragment fragment = DetailFragment.getInstance(course);
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                if (!isInTwoPaneLayout) {
+                    transaction.addToBackStack(null);
+                    transaction.replace(R.id.container1, fragment);
                 } else {
-                    getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.container1, DetailFragment.getInstance(course, false)).commit();
+                    transaction.replace(R.id.container2, fragment);
                 }
+                transaction.commit();
             }
             cursor.close();
         }
@@ -61,13 +67,17 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
 
     @Override
     public Course toggleStarCourseClicked(@NonNull Course course) {
-        // TODO set notifications...
         // Update database
         ContentValues values = new ContentValues();
         values.put(Course.COLUMN_STAR, course.getStarred() ? 0 : 1);
         getContentResolver().update(ContentUris.withAppendedId(CourseContentProvider.CONTENT_URI, course.getId()), values, null, null);
+
         // Update passed course...
         course.setStarred(!course.getStarred());
+
+        // TODO set notifications...
+        //...
+
         return course;
     }
 }
