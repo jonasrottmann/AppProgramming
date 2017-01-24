@@ -20,7 +20,8 @@ public class Course implements Parcelable {
     public static final String COLUMN_WEEKDAY = "weekday";
     public static final String COLUMN_CAT = "category";
     public static final String COLUMN_STAR = "starred";
-    public static final String[] COLUMNS = { COLUMN_ID, COLUMN_NAME, COLUMN_TEACHER, COLUMN_ROOM, COLUMN_TIMESLOT, COLUMN_WEEKDAY, COLUMN_CAT, COLUMN_STAR };
+    public static final String COLUMN_ICON = "icon";
+    public static final String[] COLUMNS = { COLUMN_ID, COLUMN_NAME, COLUMN_TEACHER, COLUMN_ROOM, COLUMN_TIMESLOT, COLUMN_WEEKDAY, COLUMN_CAT, COLUMN_STAR, COLUMN_ICON };
 
     private final Integer id;
     private final String name;
@@ -30,6 +31,7 @@ public class Course implements Parcelable {
     private final int weekday;
     private final int category;
     private int starred;
+    private final int icon;
 
     public Course(Cursor cursor) {
         this.id = cursor.getInt(0);
@@ -40,12 +42,13 @@ public class Course implements Parcelable {
         this.weekday = cursor.getInt(5);
         this.category = cursor.getInt(6);
         this.starred = cursor.getInt(7);
+        this.icon = cursor.getInt(8);
     }
 
     /**
      * Used to add {@link Course} to database. Id and starred aren't passed because they have default values.
      */
-    Course(String name, String teacher, String room, int timeslot, int weekday, int category) {
+    Course(String name, String teacher, String room, int timeslot, int weekday, int category, int icon) {
         this.id = null;
         this.name = name;
         this.teacher = teacher;
@@ -54,6 +57,7 @@ public class Course implements Parcelable {
         this.weekday = weekday;
         this.category = category;
         this.starred = 0;
+        this.icon = icon;
     }
 
     @Override
@@ -101,6 +105,10 @@ public class Course implements Parcelable {
         this.starred = starred ? 1 : 0;
     }
 
+    public int getIcon() {
+        return icon;
+    }
+
     public static class TimeSlot {
 
         private TimeSlot() {
@@ -130,21 +138,21 @@ public class Course implements Parcelable {
         private Category() {
         }
 
-        private static final SparseArray<String> categories = new SparseArray<>();
+        private static final SparseArray<String> categoryStrings = new SparseArray<>();
 
         static {
-            categories.append(0, "Denken");
-            categories.append(1, "Handwerk/Kunst");
-            categories.append(2, "Musik");
-            categories.append(3, "Sozialwissenschaften");
-            categories.append(4, "Sport/Tanz");
-            categories.append(5, "Deutsch und Fremdsprachen");
-            categories.append(6, "Wissenschaften");
-            categories.append(7, "Sonstiges");
+            categoryStrings.append(0, "Denken");
+            categoryStrings.append(1, "Handwerk/Kunst");
+            categoryStrings.append(2, "Musik");
+            categoryStrings.append(3, "Sozialwissenschaften");
+            categoryStrings.append(4, "Sport/Tanz");
+            categoryStrings.append(5, "Deutsch und Fremdsprachen");
+            categoryStrings.append(6, "Wissenschaften");
+            categoryStrings.append(7, "Sonstiges");
         }
 
-        public static String getCategoryForId(int id) {
-            return categories.get(id);
+        public static String getCategoryStringForId(int id) {
+            return categoryStrings.get(id);
         }
     }
 
@@ -159,6 +167,7 @@ public class Course implements Parcelable {
         weekday = in.readInt();
         category = in.readInt();
         starred = in.readInt();
+        icon = in.readInt();
     }
 
     @Override
@@ -181,6 +190,7 @@ public class Course implements Parcelable {
         dest.writeInt(weekday);
         dest.writeInt(category);
         dest.writeInt(starred);
+        dest.writeInt(icon);
     }
 
     @SuppressWarnings("unused")

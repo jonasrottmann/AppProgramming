@@ -47,9 +47,9 @@ class OverviewRowAdapter extends CursorRecyclerViewAdapter<OverviewRowAdapter.Vi
     @Override
     public void onBindViewHolder(ViewHolder holder, Cursor cursor) {
         holder.title.setText(cursor.getString(1));
-        // holder.teacher.setText(courses.get(position).getTeacher());
-        // holder.room.setText(courses.get(position).getRoom());
-        holder.icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.placeholder));
+        holder.teacher.setText(cursor.getString(2));
+        holder.room.setText(cursor.getString(3));
+        holder.icon.setImageDrawable(ContextCompat.getDrawable(context, cursor.getInt(8)));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
