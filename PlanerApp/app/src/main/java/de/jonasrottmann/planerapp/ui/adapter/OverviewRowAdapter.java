@@ -1,6 +1,7 @@
 package de.jonasrottmann.planerapp.ui.adapter;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -19,13 +20,13 @@ import java.util.List;
  * Created by Jonas Rottmann on 19.01.17.
  * Copyright © 2017 fluidmobile. All rights reserved.
  */
-class OverviewRowAdapter extends RecyclerView.Adapter<OverviewRowAdapter.ViewHolder> {
+class OverviewRowAdapter extends CursorRecyclerViewAdapter<OverviewRowAdapter.ViewHolder> {
 
     private final Context context;
-    private List<Course> courses;
     private final View.OnClickListener listener;
 
-    OverviewRowAdapter(@NonNull Context context, View.OnClickListener onClickListener) {
+    OverviewRowAdapter(Cursor cursor, @NonNull Context context, View.OnClickListener onClickListener) {
+        super(cursor);
         this.context = context;
         this.listener = onClickListener;
     }
@@ -39,26 +40,16 @@ class OverviewRowAdapter extends RecyclerView.Adapter<OverviewRowAdapter.ViewHol
         return new ViewHolder(itemView);
     }
 
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.title.setText(courses.get(position).getName());
-        holder.teacher.setText(courses.get(position).getTeacher());
-        holder.room.setText(courses.get(position).getRoom());
-        holder.icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.placeholder));
-    }
-
     public void setData(List<Course> courses) {
-        this.courses = courses;
         notifyDataSetChanged();
     }
 
-    public List<Course> getData() {
-        return courses;
-    }
-
     @Override
-    public int getItemCount() {
-        return this.courses == null ? 0 : this.courses.size();
+    public void onBindViewHolder(ViewHolder holder, Cursor cursor) {
+        holder.title.setText(cursor.getString(1));
+        // holder.teacher.setText(courses.get(position).getTeacher());
+        // holder.room.setText(courses.get(position).getRoom());
+        holder.icon.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.placeholder));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

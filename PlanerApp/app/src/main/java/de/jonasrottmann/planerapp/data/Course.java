@@ -1,5 +1,6 @@
 package de.jonasrottmann.planerapp.data;
 
+import android.database.Cursor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.SparseArray;
@@ -10,8 +11,8 @@ import android.util.SparseArray;
  */
 public class Course implements Parcelable {
 
-    static final String TABLE_COURSES = "course";
-    static final String COLUMN_ID = "id";
+    static final String TABLE_NAME = "course";
+    public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAME = "name";
     public static final String COLUMN_TEACHER = "teacher";
     public static final String COLUMN_ROOM = "room";
@@ -30,18 +31,15 @@ public class Course implements Parcelable {
     private final int category;
     private int starred;
 
-    /**
-     * Used when querying {@link Course}s from the database.
-     */
-    Course(int id, String name, String teacher, String room, int timeslot, int weekday, int category, int starred) {
-        this.id = id;
-        this.name = name;
-        this.teacher = teacher;
-        this.room = room;
-        this.timeslot = timeslot;
-        this.weekday = weekday;
-        this.category = category;
-        this.starred = starred;
+    public Course(Cursor cursor) {
+        this.id = cursor.getInt(0);
+        this.name = cursor.getString(1);
+        this.teacher = cursor.getString(2);
+        this.room = cursor.getString(3);
+        this.timeslot = cursor.getInt(4);
+        this.weekday = cursor.getInt(5);
+        this.category = cursor.getInt(6);
+        this.starred = cursor.getInt(7);
     }
 
     /**

@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
  */
 public abstract class ContractFragment<T> extends Fragment {
     private T contract;
-    private Context context;
 
     @Override
     public void onAttach(Context context) {

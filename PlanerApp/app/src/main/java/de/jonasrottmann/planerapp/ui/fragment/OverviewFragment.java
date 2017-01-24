@@ -1,5 +1,6 @@
 package de.jonasrottmann.planerapp.ui.fragment;
 
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,10 +11,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
-import de.jonasrottmann.planerapp.data.Course;
 import de.jonasrottmann.planerapp.ui.adapter.OverviewAdapter;
-import java.util.List;
 
 /**
  * Created by Jonas Rottmann on 19.01.17.
@@ -21,8 +22,9 @@ import java.util.List;
  */
 public class OverviewFragment extends ContractFragment<OverviewFragment.Contract> {
 
-    @Nullable
-    private RecyclerView recycler;
+    @BindView(R.id.recycler)
+    RecyclerView recycler;
+    private Cursor cursor = null;
 
     @NonNull
     public static OverviewFragment getInstance() {
@@ -33,6 +35,7 @@ public class OverviewFragment extends ContractFragment<OverviewFragment.Contract
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
+        ButterKnife.bind(this, view);
 
         // Setup Toolbar
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
@@ -40,16 +43,27 @@ public class OverviewFragment extends ContractFragment<OverviewFragment.Contract
         activity.setSupportActionBar(toolbar);
 
         // Setup Views
-        recycler = (RecyclerView) view.findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        recycler.setAdapter(new OverviewAdapter(getActivity(), getContract()));
+        recycler.setAdapter(new OverviewAdapter(getActivity(), getContract(), getContract().getCursor()));
 
         return view;
     }
 
-    public interface Contract {
-        void onCourseClicked(@NonNull Course course);
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.cursor = getContract().getCursor();
+        ((OverviewAdapter) recycler.getAdapter()).swapCursor(this.cursor);
+    }
 
-        List<Course> getCourses(int timeslot, int weekday);
+    public void updateCursor(Cursor cursor) {
+        this.cursor = cursor;
+        ((OverviewAdapter) recycler.getAdapter()).swapCursor(this.cursor);
+    }
+
+    public interface Contract {
+        void onCourseClicked(int id);
+
+        Cursor getCursor();
     }
 }
