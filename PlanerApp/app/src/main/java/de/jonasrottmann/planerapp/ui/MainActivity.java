@@ -1,8 +1,11 @@
 package de.jonasrottmann.planerapp.ui;
 
 import android.content.ContentUris;
+import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -21,6 +24,17 @@ import de.jonasrottmann.planerapp.ui.fragment.OverviewFragment;
  * Copyright © 2017 fluidmobile. All rights reserved.
  */
 public class MainActivity extends AppCompatActivity implements OverviewFragment.Contract {
+
+    private static final String EXTRA_COURSE_ID = "EXTRA_COURSE_ID";
+
+    public static Intent createIntent(@NonNull Context context, @Nullable Integer courseId) {
+        Intent intent = new Intent(context, MainActivity.class);
+        if (courseId != null) {
+            intent.putExtra(EXTRA_COURSE_ID, courseId);
+        }
+        return intent;
+    }
+
     // Views
     @BindView(R.id.container1)
     FrameLayout container1;
@@ -36,10 +50,27 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        // Handle link from notification
+        Course course = null;
+        if (getIntent().getIntExtra(EXTRA_COURSE_ID, -1) != -1) {
+            Cursor cursor = getContentResolver().query(ContentUris.withAppendedId(CourseContentProvider.CONTENT_URI, getIntent().getIntExtra(EXTRA_COURSE_ID, -1)), Course.COLUMNS, null, null, null);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    course = new Course(cursor);
+                }
+                cursor.close();
+            }
+        }
+
         // Setup fragments
-        getSupportFragmentManager().beginTransaction().replace(R.id.container1, OverviewFragment.getInstance()).commit();
-        if (isInTwoPaneLayout = (container2 != null)) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.container2, DetailFragment.getInstance(null)).commit();
+        if (isInTwoPaneLayout = container2 != null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container1, OverviewFragment.getInstance()).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.container2, DetailFragment.getInstance(course)).commit();
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container1, OverviewFragment.getInstance()).commit();
+            if (course != null) {
+                getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.container1, DetailFragment.getInstance(course)).commit();
+            }
         }
     }
 
