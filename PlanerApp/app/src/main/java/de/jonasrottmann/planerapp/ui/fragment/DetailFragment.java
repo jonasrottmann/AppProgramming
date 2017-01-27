@@ -164,11 +164,11 @@ public class DetailFragment extends Fragment {
 
     public boolean toggleStarCourseClicked() {
         String selection = Course.COLUMN_WEEKDAY + " = ? AND " + Course.COLUMN_TIMESLOT + " = ? AND " + Course.COLUMN_STAR + " = ? AND " + Course.COLUMN_ID + " != ?";
-        Cursor cursor = getActivity().getContentResolver().query(CourseContentProvider.CONTENT_URI, Course.COLUMNS, selection, new String[] {
+        Cursor collisionCursor = getActivity().getContentResolver().query(CourseContentProvider.CONTENT_URI, Course.COLUMNS, selection, new String[] {
             String.valueOf(course.getWeekday()), String.valueOf(course.getTimeslot()), String.valueOf(1), String.valueOf(course.getId())
         }, null, null);
-        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
-            final Course collisionCourse = new Course(cursor);
+        if (collisionCursor != null && collisionCursor.getCount() > 0 && collisionCursor.moveToFirst()) {
+            final Course collisionCourse = new Course(collisionCursor);
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setMessage(String.format("Dieser Slot ist schon von \"%s\" belegt. Möchsten Sie wechseln?", collisionCourse.getName()));
             builder.setTitle("Achtung");
@@ -189,7 +189,7 @@ public class DetailFragment extends Fragment {
             });
             AlertDialog dialog = builder.create();
             dialog.show();
-            cursor.close();
+            collisionCursor.close();
             return false;
         } else {
             // Just do it.
