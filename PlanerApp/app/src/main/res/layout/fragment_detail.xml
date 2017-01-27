@@ -30,8 +30,8 @@
                 android:layout_height="match_parent"
                 android:alpha="0.6"
                 android:scaleType="centerCrop"
-                android:src="@drawable/placeholder"
-                app:layout_collapseMode="parallax" />
+                app:layout_collapseMode="parallax"
+                app:srcCompat="@drawable/placeholder" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
@@ -54,13 +54,21 @@
         app:layout_anchor="@id/appbar"
         app:layout_anchorGravity="bottom|right|end" />
 
+    <TextView
+        android:id="@+id/placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="@string/fragment_detail_placeholder"
+        android:visibility="gone" />
+
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <android.support.v7.widget.CardView
-            android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_horizontal_margin">
@@ -96,7 +104,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_toEndOf="@id/teacher_icon"
                         android:maxLines="1"
-                        android:text="Lehrer" />
+                        android:text="@string/teacher" />
 
                     <TextView
                         android:id="@+id/teacher_text"
@@ -139,7 +147,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_toEndOf="@id/room_icon"
                         android:maxLines="1"
-                        android:text="Raum" />
+                        android:text="@string/room" />
 
                     <TextView
                         android:id="@+id/room_text"
@@ -182,7 +190,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_toEndOf="@id/time_icon"
                         android:maxLines="1"
-                        android:text="Uhrzeit" />
+                        android:text="@string/time" />
 
                     <TextView
                         android:id="@+id/time_text"
@@ -225,7 +233,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_toEndOf="@id/cat_icon"
                         android:maxLines="1"
-                        android:text="Kategorie" />
+                        android:text="@string/category" />
 
                     <TextView
                         android:id="@+id/cat_text"

@@ -14,6 +14,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -32,6 +33,9 @@ import de.jonasrottmann.planerapp.data.Course;
 import de.jonasrottmann.planerapp.data.CourseContentProvider;
 import timber.log.Timber;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 /**
  * Created by Jonas Rottmann on 19.01.17.
  * Copyright © 2017 fluidmobile. All rights reserved.
@@ -49,6 +53,8 @@ public class DetailFragment extends Fragment {
     Toolbar toolbar;
     @BindView(R.id.collapsing)
     CollapsingToolbarLayout collapsing;
+    @BindView(R.id.scroll)
+    NestedScrollView scroll;
 
     @BindView(R.id.teacher_row)
     RelativeLayout teacherRow;
@@ -77,6 +83,9 @@ public class DetailFragment extends Fragment {
     TextView catText;
     @BindView(R.id.cat_icon)
     ImageView catIcon;
+
+    @BindView(R.id.placeholder)
+    TextView placeholder;
 
 
     @NonNull
@@ -118,12 +127,12 @@ public class DetailFragment extends Fragment {
             if (course.getTeacher() != null) {
                 teacherText.setText(course.getTeacher());
             } else {
-                teacherRow.setVisibility(View.GONE);
+                teacherRow.setVisibility(GONE);
             }
             if (course.getRoom() != null) {
                 roomText.setText(course.getRoom());
             } else {
-                roomRow.setVisibility(View.GONE);
+                roomRow.setVisibility(GONE);
             }
             timeText.setText(Course.TimeSlot.getTimeSlotForId(course.getTimeslot()));
             catText.setText(Course.Category.getCategoryStringForId(course.getCategory()));
@@ -145,6 +154,10 @@ public class DetailFragment extends Fragment {
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
             }
+        } else {
+            placeholder.setVisibility(VISIBLE);
+            fab.setVisibility(GONE);
+            scroll.setVisibility(GONE);
         }
 
         return view;

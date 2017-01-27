@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">PlanerApp</string>
+    <string name="fragment_detail_placeholder">Wähle einen Kurs aus der Liste aus.</string>
+    <string name="teacher">Lehrer</string>
+    <string name="room">Raum</string>
+    <string name="time">Uhrzeit</string>
+    <string name="category">Kategorie</string>
 </resources>
