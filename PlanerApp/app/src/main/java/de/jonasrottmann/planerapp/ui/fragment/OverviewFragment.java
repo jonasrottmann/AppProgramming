@@ -8,8 +8,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,12 +50,12 @@ public class OverviewFragment extends ContractFragment<OverviewFragment.Contract
         View view = inflater.inflate(R.layout.fragment_overview, container, false);
         ButterKnife.bind(this, view);
 
-        // Setup Toolbar
-        //Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        //AppCompatActivity activity = (AppCompatActivity) getActivity();
-        //activity.setSupportActionBar(toolbar);
+        // Setup toolbar
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        AppCompatActivity activity = (AppCompatActivity) getActivity();
+        activity.setSupportActionBar(toolbar);
 
-        // Setup Views
+        // Setup views
         recycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recycler.setAdapter(new OverviewAdapter(getActivity(), getContract(), this.cursor));
 
@@ -69,13 +71,13 @@ public class OverviewFragment extends ContractFragment<OverviewFragment.Contract
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         this.cursor = data;
-        ((CursorRecyclerViewAdapter) this.recycler.getAdapter()).swapCursor(this.cursor);
+        ((CursorRecyclerViewAdapter) this.recycler.getAdapter()).changeCursor(this.cursor);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         this.cursor = null;
-        ((CursorRecyclerViewAdapter) this.recycler.getAdapter()).swapCursor(this.cursor);
+        ((CursorRecyclerViewAdapter) this.recycler.getAdapter()).changeCursor(this.cursor);
     }
 
     public interface Contract {

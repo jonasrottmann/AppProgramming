@@ -1,15 +1,20 @@
 package de.jonasrottmann.planerapp.ui.fragment;
 
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.database.Cursor;
 import android.graphics.ColorFilter;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -24,12 +29,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.jonasrottmann.planerapp.R;
 import de.jonasrottmann.planerapp.data.Course;
+import de.jonasrottmann.planerapp.data.CourseContentProvider;
+import timber.log.Timber;
 
 /**
  * Created by Jonas Rottmann on 19.01.17.
  * Copyright © 2017 fluidmobile. All rights reserved.
  */
-public class DetailFragment extends ContractFragment<DetailFragment.Contract> {
+public class DetailFragment extends Fragment {
 
     private static final String EXTRA_COURSE = "EXTRA_COURSE";
     @Nullable
@@ -84,8 +91,10 @@ public class DetailFragment extends ContractFragment<DetailFragment.Contract> {
     @OnClick(R.id.fab)
     public void starClicked() {
         if (course != null) {
-            this.course = getContract().toggleStarCourseClicked(course);
-            fab.setActivated(course.getStarred());
+            if (toggleStarCourseClicked()) {
+                requeryCourse();
+                fab.setActivated(course.getStarred());
+            }
         }
     }
 
@@ -153,19 +162,62 @@ public class DetailFragment extends ContractFragment<DetailFragment.Contract> {
         }
     }
 
-    public interface Contract {
-        Course toggleStarCourseClicked(@NonNull Course course);
+    public boolean toggleStarCourseClicked() {
+        String selection = Course.COLUMN_WEEKDAY + " = ? AND " + Course.COLUMN_TIMESLOT + " = ? AND " + Course.COLUMN_STAR + " = ? AND " + Course.COLUMN_ID + " != ?";
+        Cursor cursor = getActivity().getContentResolver().query(CourseContentProvider.CONTENT_URI, Course.COLUMNS, selection, new String[] {
+            String.valueOf(course.getWeekday()), String.valueOf(course.getTimeslot()), String.valueOf(1), String.valueOf(course.getId())
+        }, null, null);
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            final Course collisionCourse = new Course(cursor);
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(String.format("Dieser Slot ist schon von \"%s\" belegt. Möchsten Sie wechseln?", collisionCourse.getName()));
+            builder.setTitle("Achtung");
+            builder.setPositiveButton("Wechseln", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    if (toggleStar(collisionCourse)) {
+                        toggleStar(course);
+                    }
+                    dialog.dismiss();
+                    requeryCourse();
+                    fab.setActivated(course.getStarred());
+                }
+            });
+            builder.setNegativeButton("Abbrechen", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            cursor.close();
+            return false;
+        } else {
+            // Just do it.
+            return toggleStar(course);
+        }
     }
 
-    private static class Row {
-        public String text;
-        public String label;
-        public Drawable drawable;
+    private boolean toggleStar(@NonNull Course course) {
+        ContentValues values = new ContentValues();
+        values.put(Course.COLUMN_STAR, course.getStarred() ? 0 : 1);
+        try {
+            getActivity().getContentResolver().update(ContentUris.withAppendedId(CourseContentProvider.CONTENT_URI, course.getId()), values, null, null);
+            return true;
+        } catch (IllegalStateException e) {
+            Timber.e(e);
+            return false;
+        }
+    }
 
-        public Row(@NonNull String text, @NonNull String label, @NonNull Drawable drawable) {
-            this.text = text;
-            this.label = label;
-            this.drawable = drawable;
+    private void requeryCourse() {
+        Cursor cursor = getActivity().getContentResolver().query(ContentUris.withAppendedId(CourseContentProvider.CONTENT_URI, course.getId()), Course.COLUMNS, null, null, null);
+        if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
+            course = new Course(cursor);
+        } else {
+            course = null;
+        }
+        if (cursor != null) {
+            cursor.close();
         }
     }
 }

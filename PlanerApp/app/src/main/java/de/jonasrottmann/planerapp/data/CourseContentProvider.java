@@ -73,12 +73,32 @@ public class CourseContentProvider extends android.content.ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        // TODO nur eine veranstaltung pro weekday&timeslot kann markiert werden!
         if (URI_MATCHER.match(uri) == COURSE_ID) {
-            int id = Integer.parseInt(uri.getPathSegments().get(1));
-            int count = database.updateCourse(id, values);
-            getContext().getContentResolver().notifyChange(uri, null);
-            return count;
+            Course course;
+            Cursor courseCursor = database.getCourse(Integer.parseInt(uri.getPathSegments().get(1)), Course.COLUMNS, null, null, null);
+            if (courseCursor != null && courseCursor.moveToFirst()) {
+                course = new Course(courseCursor);
+            } else {
+                throw new IllegalArgumentException("No course with this id.");
+            }
+            if (values.getAsInteger(Course.COLUMN_STAR) == 1) {
+                // Course should be starred
+                // Get stared course for this timeslot
+                Cursor starredCourses = database.getAllCourses(Course.COLUMNS, Course.COLUMN_WEEKDAY + " = ? AND " + Course.COLUMN_TIMESLOT + " = ? AND " + Course.COLUMN_STAR + " = ?", new String[] {
+                    String.valueOf(course.getWeekday()), String.valueOf(course.getTimeslot()), String.valueOf(1)
+                }, null);
+                if (starredCourses == null || starredCourses.getCount() != 0) {
+                    throw new IllegalStateException("Only one starred course per timeslot allowed.");
+                } else {
+                    // Set star
+                    getContext().getContentResolver().notifyChange(uri, null);
+                    return database.updateCourse(course.getId(), values);
+                }
+            } else {
+                // Remove star
+                getContext().getContentResolver().notifyChange(uri, null);
+                return database.updateCourse(course.getId(), values);
+            }
         } else {
             throw new IllegalArgumentException("Not allowed to update multiple courses at once.");
         }

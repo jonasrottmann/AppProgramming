@@ -124,7 +124,7 @@ public class CourseDatabaseHelper extends SQLiteOpenHelper {
         return sqliteQueryBuilder.query(getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
     }
 
-    public int updateCourse(int id, ContentValues values) {
+    int updateCourse(int id, ContentValues values) {
         return getWritableDatabase().update(TABLE_NAME, values, "_id=?", new String[] { String.valueOf(id) });
     }
 }

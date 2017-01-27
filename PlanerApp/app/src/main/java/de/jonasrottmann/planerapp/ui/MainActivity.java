@@ -1,10 +1,8 @@
 package de.jonasrottmann.planerapp.ui;
 
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -22,7 +20,7 @@ import de.jonasrottmann.planerapp.ui.fragment.OverviewFragment;
  * Created by Jonas Rottmann on 19.01.17.
  * Copyright © 2017 fluidmobile. All rights reserved.
  */
-public class MainActivity extends AppCompatActivity implements OverviewFragment.Contract, DetailFragment.Contract {
+public class MainActivity extends AppCompatActivity implements OverviewFragment.Contract {
     // Views
     @BindView(R.id.container1)
     FrameLayout container1;
@@ -63,26 +61,5 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
             }
             cursor.close();
         }
-    }
-
-    @Override
-    public Course toggleStarCourseClicked(@NonNull Course course) {
-        // Update database
-        ContentValues values = new ContentValues();
-        values.put(Course.COLUMN_STAR, course.getStarred() ? 0 : 1);
-        getContentResolver().update(ContentUris.withAppendedId(CourseContentProvider.CONTENT_URI, course.getId()), values, null, null);
-
-        // Requery the course
-        Cursor cursor = getContentResolver().query(ContentUris.withAppendedId(CourseContentProvider.CONTENT_URI, course.getId()), Course.COLUMNS, null, null, null);
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                course = new Course(cursor);
-            }
-        }
-
-        // TODO set notifications...
-        //...
-
-        return course;
     }
 }
