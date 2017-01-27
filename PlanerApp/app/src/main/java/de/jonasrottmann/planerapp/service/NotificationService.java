@@ -36,7 +36,7 @@ public class NotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (intent.getParcelableExtra(EXTRA_COURSE_ID) == null) {
+        if (intent != null && intent.getParcelableExtra(EXTRA_COURSE_ID) == null) {
             throw new IllegalArgumentException("No course found in intent extras!");
         }
 
@@ -52,6 +52,6 @@ public class NotificationService extends Service {
         // Builds the notification and issues it
         mNotifyMgr.notify(course.getId(), mBuilder.build());
 
-        return super.onStartCommand(intent, flags, startId);
+        return START_REDELIVER_INTENT;
     }
 }

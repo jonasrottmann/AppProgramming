@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 import butterknife.BindView;
@@ -16,6 +17,7 @@ import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
 import de.jonasrottmann.planerapp.data.Course;
 import de.jonasrottmann.planerapp.data.CourseContentProvider;
+import de.jonasrottmann.planerapp.service.NotificationService;
 import de.jonasrottmann.planerapp.ui.fragment.DetailFragment;
 import de.jonasrottmann.planerapp.ui.fragment.OverviewFragment;
 
@@ -57,6 +59,11 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
                     course = new Course(cursor);
+
+                    // Dismiss Notification when clicked
+                    NotificationManagerCompat.from(this).cancel(course.getId());
+                    // Stop NotificationService
+                    stopService(NotificationService.createIntent(this, course));
                 }
                 cursor.close();
             }

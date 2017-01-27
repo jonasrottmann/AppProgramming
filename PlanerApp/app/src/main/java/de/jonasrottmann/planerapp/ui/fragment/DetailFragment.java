@@ -31,6 +31,7 @@ import butterknife.OnClick;
 import de.jonasrottmann.planerapp.R;
 import de.jonasrottmann.planerapp.data.Course;
 import de.jonasrottmann.planerapp.data.CourseContentProvider;
+import de.jonasrottmann.planerapp.service.NotificationService;
 import timber.log.Timber;
 
 import static android.view.View.GONE;
@@ -231,6 +232,11 @@ public class DetailFragment extends Fragment {
         }
         if (cursor != null) {
             cursor.close();
+        }
+
+        // TODO remove
+        if (course != null && course.getStarred()) {
+            getActivity().startService(NotificationService.createIntent(getActivity(), course));
         }
     }
 }
