@@ -15,8 +15,8 @@ import android.widget.FrameLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
-import de.jonasrottmann.planerapp.data.Course;
-import de.jonasrottmann.planerapp.data.CourseContentProvider;
+import de.jonasrottmann.planerapp.data.model.Course;
+import de.jonasrottmann.planerapp.data.provider.DatabaseContract;
 import de.jonasrottmann.planerapp.service.NotificationService;
 import de.jonasrottmann.planerapp.ui.fragment.DetailFragment;
 import de.jonasrottmann.planerapp.ui.fragment.OverviewFragment;
@@ -28,15 +28,6 @@ import de.jonasrottmann.planerapp.ui.fragment.OverviewFragment;
 public class MainActivity extends AppCompatActivity implements OverviewFragment.Contract {
 
     private static final String EXTRA_COURSE_ID = "EXTRA_COURSE_ID";
-
-    public static Intent createIntent(@NonNull Context context, @Nullable Integer courseId) {
-        Intent intent = new Intent(context, MainActivity.class);
-        if (courseId != null) {
-            intent.putExtra(EXTRA_COURSE_ID, courseId);
-        }
-        return intent;
-    }
-
     // Views
     @BindView(R.id.container1)
     FrameLayout container1;
@@ -45,6 +36,14 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
     FrameLayout container2;
     // Fields
     private boolean isInTwoPaneLayout;
+
+    public static Intent createIntent(@NonNull Context context, @Nullable Integer courseId) {
+        Intent intent = new Intent(context, MainActivity.class);
+        if (courseId != null) {
+            intent.putExtra(EXTRA_COURSE_ID, courseId);
+        }
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +54,9 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
         // Handle link from notification
         Course course = null;
         if (getIntent().getIntExtra(EXTRA_COURSE_ID, -1) != -1) {
-            Cursor cursor = getContentResolver().query(ContentUris.withAppendedId(CourseContentProvider.CONTENT_URI, getIntent().getIntExtra(EXTRA_COURSE_ID, -1)), Course.COLUMNS, null, null, null);
+            Cursor cursor =
+                getContentResolver().query(ContentUris.withAppendedId(DatabaseContract.Course.CONTENT_URI, getIntent().getIntExtra(EXTRA_COURSE_ID, -1)), DatabaseContract.Course.COLUMNS, null, null,
+                    null);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
                     course = new Course(cursor);
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
 
     @Override
     public void onCourseClicked(int id) {
-        Cursor cursor = getContentResolver().query(ContentUris.withAppendedId(CourseContentProvider.CONTENT_URI, id), Course.COLUMNS, null, null, null);
+        Cursor cursor = getContentResolver().query(ContentUris.withAppendedId(DatabaseContract.Course.CONTENT_URI, id), DatabaseContract.Course.COLUMNS, null, null, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 Course course = new Course(cursor); // Build data object from cursor

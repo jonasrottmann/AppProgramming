@@ -1,4 +1,4 @@
-package de.jonasrottmann.planerapp.data;
+package de.jonasrottmann.planerapp.data.model;
 
 import android.database.Cursor;
 import android.os.Parcel;
@@ -11,19 +11,18 @@ import de.jonasrottmann.planerapp.R;
  * Copyright © 2017 fluidmobile. All rights reserved.
  */
 public class Course implements Parcelable {
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Course> CREATOR = new Parcelable.Creator<Course>() {
+        @Override
+        public Course createFromParcel(Parcel in) {
+            return new Course(in);
+        }
 
-    static final String TABLE_NAME = "course";
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_TEACHER = "teacher";
-    public static final String COLUMN_ROOM = "room";
-    public static final String COLUMN_TIMESLOT = "timeslot";
-    public static final String COLUMN_WEEKDAY = "weekday";
-    public static final String COLUMN_CAT = "category";
-    public static final String COLUMN_STAR = "starred";
-    public static final String COLUMN_ICON = "icon";
-    public static final String[] COLUMNS = { COLUMN_ID, COLUMN_NAME, COLUMN_TEACHER, COLUMN_ROOM, COLUMN_TIMESLOT, COLUMN_WEEKDAY, COLUMN_CAT, COLUMN_STAR, COLUMN_ICON };
-
+        @Override
+        public Course[] newArray(int size) {
+            return new Course[size];
+        }
+    };
     private final Integer id;
     private final String name;
     private final String teacher;
@@ -31,8 +30,8 @@ public class Course implements Parcelable {
     private final int timeslot;
     private final int weekday;
     private final int category;
-    private int starred;
     private final int icon;
+    private int starred;
 
     public Course(Cursor cursor) {
         this.id = cursor.getInt(0);
@@ -59,6 +58,19 @@ public class Course implements Parcelable {
         this.category = category;
         this.starred = 0;
         this.icon = icon;
+    }
+
+    //region Parcelable
+    private Course(Parcel in) {
+        id = in.readByte() == 0x00 ? null : in.readInt();
+        name = in.readString();
+        teacher = in.readString();
+        room = in.readString();
+        timeslot = in.readInt();
+        weekday = in.readInt();
+        category = in.readInt();
+        starred = in.readInt();
+        icon = in.readInt();
     }
 
     @Override
@@ -110,10 +122,30 @@ public class Course implements Parcelable {
         return icon;
     }
 
-    public static class TimeSlot {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
-        private TimeSlot() {
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (id == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeInt(id);
         }
+        dest.writeString(name);
+        dest.writeString(teacher);
+        dest.writeString(room);
+        dest.writeInt(timeslot);
+        dest.writeInt(weekday);
+        dest.writeInt(category);
+        dest.writeInt(starred);
+        dest.writeInt(icon);
+    }
+
+    public static class TimeSlot {
 
         private static final SparseArray<String> timeSlots = new SparseArray<>();
 
@@ -129,15 +161,15 @@ public class Course implements Parcelable {
             timeSlots.append(8, "16:00");
         }
 
+        private TimeSlot() {
+        }
+
         public static String getTimeSlotForId(int id) {
             return timeSlots.get(id);
         }
     }
 
     public static class Category {
-
-        private Category() {
-        }
 
         private static final SparseArray<String> categoryStrings = new SparseArray<>();
         private static final SparseArray<Integer> categoryColor = new SparseArray<>();
@@ -162,6 +194,9 @@ public class Course implements Parcelable {
             categoryColor.append(7, R.color.cat7);
         }
 
+        private Category() {
+        }
+
         public static String getCategoryStringForId(int id) {
             return categoryStrings.get(id);
         }
@@ -171,54 +206,22 @@ public class Course implements Parcelable {
         }
     }
 
+    public static class Icon {
 
-    //region Parcelable
-    private Course(Parcel in) {
-        id = in.readByte() == 0x00 ? null : in.readInt();
-        name = in.readString();
-        teacher = in.readString();
-        room = in.readString();
-        timeslot = in.readInt();
-        weekday = in.readInt();
-        category = in.readInt();
-        starred = in.readInt();
-        icon = in.readInt();
-    }
+        private static final SparseArray<Integer> icons = new SparseArray<>();
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        if (id == null) {
-            dest.writeByte((byte) (0x00));
-        } else {
-            dest.writeByte((byte) (0x01));
-            dest.writeInt(id);
-        }
-        dest.writeString(name);
-        dest.writeString(teacher);
-        dest.writeString(room);
-        dest.writeInt(timeslot);
-        dest.writeInt(weekday);
-        dest.writeInt(category);
-        dest.writeInt(starred);
-        dest.writeInt(icon);
-    }
-
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<Course> CREATOR = new Parcelable.Creator<Course>() {
-        @Override
-        public Course createFromParcel(Parcel in) {
-            return new Course(in);
+        static {
+            icons.append(0, R.drawable.placeholder);
+            icons.append(1, R.drawable.german_workshop);
+            icons.append(2, R.drawable.read_write_calc);
         }
 
-        @Override
-        public Course[] newArray(int size) {
-            return new Course[size];
+        private Icon() {
         }
-    };
+
+        public static Integer getIconResId(int id) {
+            return icons.get(id);
+        }
+    }
     //endregion
 }

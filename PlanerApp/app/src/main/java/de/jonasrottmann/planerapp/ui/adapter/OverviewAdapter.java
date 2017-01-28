@@ -14,8 +14,9 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
-import de.jonasrottmann.planerapp.data.Course;
 import de.jonasrottmann.planerapp.data.FilterCursorWrapper;
+import de.jonasrottmann.planerapp.data.model.Course;
+import de.jonasrottmann.planerapp.data.provider.DatabaseContract.Course.Index;
 import de.jonasrottmann.planerapp.ui.fragment.OverviewFragment;
 import de.jonasrottmann.planerapp.ui.views.HorizontalSpaceItemDecoration;
 
@@ -30,14 +31,13 @@ public class OverviewAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
 
     private final Context context;
     private final OverviewFragment.Contract contract;
+    private final SparseArray<Parcelable> scrollStatePositionsMap = new SparseArray<>();
 
     public OverviewAdapter(Context context, OverviewFragment.Contract contract, Cursor cursor) {
         super(cursor);
         this.context = context;
         this.contract = contract;
     }
-
-    private final SparseArray<Parcelable> scrollStatePositionsMap = new SparseArray<>();
 
     @Override
     public int getItemViewType(int position) {
@@ -74,14 +74,14 @@ public class OverviewAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
         ((Row) holder).getTimeView().setText(Course.TimeSlot.getTimeSlotForId(holder.getAdapterPosition()));
         switch (holder.getItemViewType()) {
             case VIEWTYPE_COURSES:
-                Cursor cursor1 = new FilterCursorWrapper(cursor, String.valueOf(holder.getAdapterPosition()), 4);
+                Cursor cursor1 = new FilterCursorWrapper(cursor, String.valueOf(holder.getAdapterPosition()), Index.COLUMN_TIMESLOT);
                 OverviewRowAdapter adapter = new OverviewRowAdapter(cursor1, context, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         int pos = ((ViewHolderCoursesRow) holder).recycler.getChildAdapterPosition(v);
                         Cursor cursor2 = ((OverviewRowAdapter) ((ViewHolderCoursesRow) holder).recycler.getAdapter()).getCursor();
                         cursor2.moveToPosition(pos);
-                        contract.onCourseClicked(cursor2.getInt(0));
+                        contract.onCourseClicked(cursor2.getInt(Index.COLUMN_ID));
                     }
                 });
                 ((ViewHolderCoursesRow) holder).recycler.setAdapter(adapter);
@@ -101,6 +101,10 @@ public class OverviewAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                 ((ViewHolderText) holder).text.setText("Mittagspause");
                 break;
         }
+    }
+
+    interface Row {
+        TextView getTimeView();
     }
 
     @SuppressWarnings("WeakerAccess")
@@ -153,9 +157,5 @@ public class OverviewAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
         public TextView getTimeView() {
             return this.time;
         }
-    }
-
-    interface Row {
-        TextView getTimeView();
     }
 }

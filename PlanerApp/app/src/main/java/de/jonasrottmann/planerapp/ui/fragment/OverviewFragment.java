@@ -1,7 +1,6 @@
 package de.jonasrottmann.planerapp.ui.fragment;
 
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,7 +17,7 @@ import android.view.ViewGroup;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
-import de.jonasrottmann.planerapp.data.CourseContentProvider;
+import de.jonasrottmann.planerapp.data.provider.DatabaseContract;
 import de.jonasrottmann.planerapp.ui.adapter.CursorRecyclerViewAdapter;
 import de.jonasrottmann.planerapp.ui.adapter.OverviewAdapter;
 
@@ -64,8 +63,7 @@ public class OverviewFragment extends ContractFragment<OverviewFragment.Contract
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Uri CONTENT_URI = CourseContentProvider.CONTENT_URI;
-        return new CursorLoader(getActivity(), CONTENT_URI, null, null, null, null);
+        return new CursorLoader(getActivity(), DatabaseContract.Course.CONTENT_URI, null, null, null, null);
     }
 
     @Override

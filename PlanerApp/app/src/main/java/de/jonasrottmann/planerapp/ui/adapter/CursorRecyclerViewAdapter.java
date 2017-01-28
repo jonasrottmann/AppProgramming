@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.DataSetObserver;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import de.jonasrottmann.planerapp.data.provider.DatabaseContract.Course.Columns;
 import timber.log.Timber;
 
 /**
@@ -20,7 +21,7 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
     public CursorRecyclerViewAdapter(@Nullable Cursor cursor) {
         this.cursor = cursor;
         dataValid = cursor != null;
-        rowIdColumn = dataValid ? this.cursor.getColumnIndex("_id") : -1;
+        rowIdColumn = dataValid ? this.cursor.getColumnIndex(Columns.COLUMN_ID) : -1;
         dataSetObserver = new NotifyingDataSetObserver();
         if (this.cursor != null) {
             this.cursor.registerDataSetObserver(dataSetObserver);
@@ -95,7 +96,7 @@ public abstract class CursorRecyclerViewAdapter<VH extends RecyclerView.ViewHold
             if (dataSetObserver != null) {
                 cursor.registerDataSetObserver(dataSetObserver);
             }
-            rowIdColumn = newCursor.getColumnIndexOrThrow("_id");
+            rowIdColumn = newCursor.getColumnIndexOrThrow(Columns.COLUMN_ID);
             dataValid = true;
             notifyDataSetChanged();
         } else {

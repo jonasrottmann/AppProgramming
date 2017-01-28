@@ -29,13 +29,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.jonasrottmann.planerapp.R;
-import de.jonasrottmann.planerapp.data.Course;
-import de.jonasrottmann.planerapp.data.CourseContentProvider;
+import de.jonasrottmann.planerapp.data.model.Course;
+import de.jonasrottmann.planerapp.data.provider.DatabaseContract;
 import de.jonasrottmann.planerapp.service.NotificationService;
 import timber.log.Timber;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
+import static de.jonasrottmann.planerapp.data.provider.DatabaseContract.Course.COLUMNS;
+import static de.jonasrottmann.planerapp.data.provider.DatabaseContract.Course.Columns.COLUMN_ID;
+import static de.jonasrottmann.planerapp.data.provider.DatabaseContract.Course.Columns.COLUMN_STAR;
+import static de.jonasrottmann.planerapp.data.provider.DatabaseContract.Course.Columns.COLUMN_TIMESLOT;
+import static de.jonasrottmann.planerapp.data.provider.DatabaseContract.Course.Columns.COLUMN_WEEKDAY;
 
 /**
  * Created by Jonas Rottmann on 19.01.17.
@@ -44,8 +49,6 @@ import static android.view.View.VISIBLE;
 public class DetailFragment extends Fragment {
 
     private static final String EXTRA_COURSE = "EXTRA_COURSE";
-    @Nullable
-    private Course course;
     @BindView(R.id.fab)
     FloatingActionButton fab;
     @BindView(R.id.backdrop)
@@ -56,38 +59,34 @@ public class DetailFragment extends Fragment {
     CollapsingToolbarLayout collapsing;
     @BindView(R.id.scroll)
     NestedScrollView scroll;
-
     @BindView(R.id.teacher_row)
     RelativeLayout teacherRow;
     @BindView(R.id.teacher_text)
     TextView teacherText;
     @BindView(R.id.teacher_icon)
     ImageView teacherIcon;
-
     @BindView(R.id.room_row)
     RelativeLayout roomRow;
     @BindView(R.id.room_text)
     TextView roomText;
     @BindView(R.id.room_icon)
     ImageView roomIcon;
-
     @BindView(R.id.time_row)
     RelativeLayout timeRow;
     @BindView(R.id.time_text)
     TextView timeText;
     @BindView(R.id.time_icon)
     ImageView timeIcon;
-
     @BindView(R.id.cat_row)
     RelativeLayout catRow;
     @BindView(R.id.cat_text)
     TextView catText;
     @BindView(R.id.cat_icon)
     ImageView catIcon;
-
     @BindView(R.id.placeholder)
     TextView placeholder;
-
+    @Nullable
+    private Course course;
 
     @NonNull
     public static DetailFragment getInstance(@Nullable Course course) {
@@ -124,7 +123,7 @@ public class DetailFragment extends Fragment {
         if (course != null) {
             // Setup views
             fab.setActivated(course.getStarred());
-            backdrop.setImageDrawable(ContextCompat.getDrawable(getActivity(), course.getIcon()));
+            backdrop.setImageDrawable(ContextCompat.getDrawable(getActivity(), Course.Icon.getIconResId(course.getIcon())));
             if (course.getTeacher() != null) {
                 teacherText.setText(course.getTeacher());
             } else {
@@ -177,8 +176,8 @@ public class DetailFragment extends Fragment {
     }
 
     public boolean toggleStarCourseClicked() {
-        String selection = Course.COLUMN_WEEKDAY + " = ? AND " + Course.COLUMN_TIMESLOT + " = ? AND " + Course.COLUMN_STAR + " = ? AND " + Course.COLUMN_ID + " != ?";
-        Cursor collisionCursor = getActivity().getContentResolver().query(CourseContentProvider.CONTENT_URI, Course.COLUMNS, selection, new String[] {
+        String selection = COLUMN_WEEKDAY + " = ? AND " + COLUMN_TIMESLOT + " = ? AND " + COLUMN_STAR + " = ? AND " + COLUMN_ID + " != ?";
+        Cursor collisionCursor = getActivity().getContentResolver().query(DatabaseContract.Course.CONTENT_URI, COLUMNS, selection, new String[] {
             String.valueOf(course.getWeekday()), String.valueOf(course.getTimeslot()), String.valueOf(1), String.valueOf(course.getId())
         }, null, null);
         if (collisionCursor != null && collisionCursor.getCount() > 0 && collisionCursor.moveToFirst()) {
@@ -213,9 +212,9 @@ public class DetailFragment extends Fragment {
 
     private boolean toggleStar(@NonNull Course course) {
         ContentValues values = new ContentValues();
-        values.put(Course.COLUMN_STAR, course.getStarred() ? 0 : 1);
+        values.put(COLUMN_STAR, course.getStarred() ? 0 : 1);
         try {
-            getActivity().getContentResolver().update(ContentUris.withAppendedId(CourseContentProvider.CONTENT_URI, course.getId()), values, null, null);
+            getActivity().getContentResolver().update(ContentUris.withAppendedId(DatabaseContract.Course.CONTENT_URI, course.getId()), values, null, null);
             return true;
         } catch (IllegalStateException e) {
             Timber.e(e);
@@ -224,7 +223,7 @@ public class DetailFragment extends Fragment {
     }
 
     private void requeryCourse() {
-        Cursor cursor = getActivity().getContentResolver().query(ContentUris.withAppendedId(CourseContentProvider.CONTENT_URI, course.getId()), Course.COLUMNS, null, null, null);
+        Cursor cursor = getActivity().getContentResolver().query(ContentUris.withAppendedId(DatabaseContract.Course.CONTENT_URI, course.getId()), COLUMNS, null, null, null);
         if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
             course = new Course(cursor);
         } else {

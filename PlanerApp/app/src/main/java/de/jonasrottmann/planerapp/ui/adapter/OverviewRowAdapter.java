@@ -17,7 +17,10 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
-import de.jonasrottmann.planerapp.data.Course;
+import de.jonasrottmann.planerapp.data.model.Course;
+import de.jonasrottmann.planerapp.data.provider.DatabaseContract.Course.Index;
+
+import static de.jonasrottmann.planerapp.data.model.Course.Category.getCategoryColorForId;
 
 /**
  * Created by Jonas Rottmann on 19.01.17.
@@ -45,13 +48,13 @@ class OverviewRowAdapter extends CursorRecyclerViewAdapter<OverviewRowAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, Cursor cursor) {
-        holder.card.setCardBackgroundColor(ContextCompat.getColor(context, Course.Category.getCategoryColorForId(cursor.getInt(6))));
-        holder.title.setText(cursor.getString(1));
-        holder.teacher.setText(cursor.getString(2));
-        holder.room.setText(cursor.getString(3));
-        holder.icon.setImageDrawable(ContextCompat.getDrawable(context, cursor.getInt(8)));
-        holder.star.setVisibility(cursor.getInt(7) == 0 ? View.GONE : View.VISIBLE);
-        ColorFilter colorFilter = new PorterDuffColorFilter(ContextCompat.getColor(context, Course.Category.getCategoryColorForId(cursor.getInt(6))), PorterDuff.Mode.SRC_ATOP);
+        holder.card.setCardBackgroundColor(ContextCompat.getColor(context, getCategoryColorForId(cursor.getInt(Index.COLUMN_CAT))));
+        holder.title.setText(cursor.getString(Index.COLUMN_NAME));
+        holder.teacher.setText(cursor.getString(Index.COLUMN_TEACHER));
+        holder.room.setText(cursor.getString(Index.COLUMN_ROOM));
+        holder.icon.setImageDrawable(ContextCompat.getDrawable(context, Course.Icon.getIconResId(cursor.getInt(Index.COLUMN_ICON))));
+        holder.star.setVisibility(cursor.getInt(Index.COLUMN_STAR) == 0 ? View.GONE : View.VISIBLE);
+        ColorFilter colorFilter = new PorterDuffColorFilter(ContextCompat.getColor(context, getCategoryColorForId(cursor.getInt(Index.COLUMN_CAT))), PorterDuff.Mode.SRC_ATOP);
         holder.star.setColorFilter(colorFilter);
     }
 
