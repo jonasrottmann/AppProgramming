@@ -7,7 +7,7 @@ CREATE TABLE "course" (
   "weekday" integer NOT NULL,
   "category" integer,
   "starred" integer NOT NULL DEFAULT(0),
-  "icon" integer NOT NULL DEFAULT(-1)
+  "icon" integer NOT NULL DEFAULT(0)
 );
 INSERT INTO "course" VALUES(1,'Asien-Versammlung',NULL,'Russland',0,0,7,0,0);
 INSERT INTO "course" VALUES(2,'Chemie III','Jan','Mongolei',1,0,6,0,0);
