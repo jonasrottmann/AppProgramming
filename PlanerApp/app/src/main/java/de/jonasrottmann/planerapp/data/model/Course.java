@@ -5,11 +5,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.SparseArray;
 import de.jonasrottmann.planerapp.R;
+import lombok.Getter;
 
 /**
  * Created by Jonas Rottmann on 19.01.17.
  * Copyright © 2017 fluidmobile. All rights reserved.
  */
+@Getter
 public class Course implements Parcelable {
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<Course> CREATOR = new Parcelable.Creator<Course>() {
@@ -82,44 +84,8 @@ public class Course implements Parcelable {
             '}';
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getTeacher() {
-        return teacher;
-    }
-
-    public String getRoom() {
-        return room;
-    }
-
-    public int getTimeslot() {
-        return timeslot;
-    }
-
-    public int getWeekday() {
-        return weekday;
-    }
-
-    public int getCategory() {
-        return category;
-    }
-
     public boolean getStarred() {
         return starred != 0;
-    }
-
-    public void setStarred(boolean starred) {
-        this.starred = starred ? 1 : 0;
-    }
-
-    public int getIcon() {
-        return icon;
     }
 
     @Override

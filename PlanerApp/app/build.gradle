@@ -36,4 +36,6 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
 
     compile 'com.jakewharton.timber:timber:4.5.1'
+
+    provided 'org.projectlombok:lombok:1.16.12'
 }
