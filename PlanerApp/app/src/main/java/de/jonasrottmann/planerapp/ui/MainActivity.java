@@ -50,26 +50,8 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         // Handle link from notification
-        Course course = null;
-        if (getIntent().getIntExtra(EXTRA_COURSE_ID, -1) != -1) {
-            Cursor cursor =
-                getContentResolver().query(ContentUris.withAppendedId(DatabaseContract.Course.CONTENT_URI, getIntent().getIntExtra(EXTRA_COURSE_ID, -1)), DatabaseContract.Course.COLUMNS, null, null,
-                    null);
-            if (cursor != null) {
-                if (cursor.moveToFirst()) {
-                    course = new Course(cursor);
-
-                    // Dismiss Notification when clicked
-                    NotificationManagerCompat.from(this).cancel(course.getId());
-                    // Stop NotificationService
-                    stopService(NotificationService.createIntent(this, course));
-                }
-                cursor.close();
-            }
-        }
-
+        Course course = getCourseFromIntent(getIntent());
         // Setup fragments
         if (isInTwoPaneLayout = container2 != null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container1, OverviewFragment.getInstance()).commit();
@@ -80,6 +62,41 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
                 getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.container1, DetailFragment.getInstance(course)).commit();
             }
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        // Handle link from notification
+        Course course = getCourseFromIntent(intent);
+        // Setup fragments
+        if (isInTwoPaneLayout = container2 != null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.container2, DetailFragment.getInstance(course)).commit();
+        } else {
+            if (course != null) {
+                getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.container1, DetailFragment.getInstance(course)).commit();
+            }
+        }
+    }
+
+    @Nullable
+    private Course getCourseFromIntent(Intent intent) {
+        Course course = null;
+        if (intent.getIntExtra(EXTRA_COURSE_ID, -1) != -1) {
+            Cursor cursor =
+                getContentResolver().query(ContentUris.withAppendedId(DatabaseContract.Course.CONTENT_URI, intent.getIntExtra(EXTRA_COURSE_ID, -1)), DatabaseContract.Course.COLUMNS, null, null, null);
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    course = new Course(cursor);
+                    // Dismiss notification
+                    NotificationManagerCompat.from(this).cancel(course.getId());
+                    // Stop NotificationService
+                    stopService(NotificationService.createIntent(this, course));
+                }
+                cursor.close();
+            }
+        }
+        return course;
     }
 
     @Override
