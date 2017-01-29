@@ -23,7 +23,8 @@
             android:name=".data.provider.CourseContentProvider"
             android:authorities="de.jonasrottmann.planerapp" />
 
-        <service android:name=".service.NotificationService" />
+        <receiver android:name=".service.NotificationPublisher" />
+
     </application>
 
 </manifest>

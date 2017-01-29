@@ -31,7 +31,7 @@ import butterknife.OnClick;
 import de.jonasrottmann.planerapp.R;
 import de.jonasrottmann.planerapp.data.model.Course;
 import de.jonasrottmann.planerapp.data.provider.DatabaseContract;
-import de.jonasrottmann.planerapp.service.NotificationService;
+import de.jonasrottmann.planerapp.service.NotificationPublisher;
 import timber.log.Timber;
 
 import static android.view.View.GONE;
@@ -215,6 +215,13 @@ public class DetailFragment extends Fragment {
         values.put(COLUMN_STAR, course.getStarred() ? 0 : 1);
         try {
             getActivity().getContentResolver().update(ContentUris.withAppendedId(DatabaseContract.Course.CONTENT_URI, course.getId()), values, null, null);
+
+            // Schedule/cancel Notification
+            if (!course.getStarred()) {
+                NotificationPublisher.scheduleNotification(getActivity(), course);
+            } else {
+                NotificationPublisher.cancelScheduledNotification(getActivity(), course);
+            }
             return true;
         } catch (IllegalStateException e) {
             Timber.e(e);
@@ -231,11 +238,6 @@ public class DetailFragment extends Fragment {
         }
         if (cursor != null) {
             cursor.close();
-        }
-
-        // TODO remove
-        if (course != null && course.getStarred()) {
-            getActivity().startService(NotificationService.createIntent(getActivity(), course));
         }
     }
 }

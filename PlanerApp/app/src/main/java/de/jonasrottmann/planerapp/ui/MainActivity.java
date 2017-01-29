@@ -17,7 +17,6 @@ import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
 import de.jonasrottmann.planerapp.data.model.Course;
 import de.jonasrottmann.planerapp.data.provider.DatabaseContract;
-import de.jonasrottmann.planerapp.service.NotificationService;
 import de.jonasrottmann.planerapp.ui.fragment.DetailFragment;
 import de.jonasrottmann.planerapp.ui.fragment.OverviewFragment;
 
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
         // Handle link from notification
         Course course = getCourseFromIntent(intent);
         // Setup fragments
-        if (isInTwoPaneLayout = container2 != null) {
+        if (isInTwoPaneLayout) {
             getSupportFragmentManager().beginTransaction().replace(R.id.container2, DetailFragment.getInstance(course)).commit();
         } else {
             if (course != null) {
@@ -90,8 +89,6 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
                     course = new Course(cursor);
                     // Dismiss notification
                     NotificationManagerCompat.from(this).cancel(course.getId());
-                    // Stop NotificationService
-                    stopService(NotificationService.createIntent(this, course));
                 }
                 cursor.close();
             }

@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.SparseArray;
 import de.jonasrottmann.planerapp.R;
+import java.util.Calendar;
 import lombok.Getter;
 
 /**
@@ -88,6 +89,16 @@ public class Course implements Parcelable {
         return starred != 0;
     }
 
+    public long getTimeslotInMillis() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK, weekday + 2);
+        calendar.set(Calendar.HOUR_OF_DAY, timeslot + 8);
+        if (timeslot == 0) {
+            calendar.set(Calendar.MINUTE, 30);
+        }
+        return calendar.getTimeInMillis();
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -169,6 +180,26 @@ public class Course implements Parcelable {
 
         public static int getCategoryColorForId(int id) {
             return categoryColor.get(id);
+        }
+    }
+
+    public static class Weekday {
+
+        private static final SparseArray<String> weekdayStrings = new SparseArray<>();
+
+        static {
+            weekdayStrings.append(0, "Montag");
+            weekdayStrings.append(1, "Dienstag");
+            weekdayStrings.append(2, "Mittwoch");
+            weekdayStrings.append(3, "Donnerstag");
+            weekdayStrings.append(4, "Freitag");
+        }
+
+        private Weekday() {
+        }
+
+        public static String getWeekdayStringForId(int id) {
+            return weekdayStrings.get(id);
         }
     }
 
