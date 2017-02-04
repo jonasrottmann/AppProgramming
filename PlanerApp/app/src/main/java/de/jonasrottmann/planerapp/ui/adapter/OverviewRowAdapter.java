@@ -17,10 +17,10 @@ import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
-import de.jonasrottmann.planerapp.data.model.Course;
+import de.jonasrottmann.planerapp.data.model.Icon;
 import de.jonasrottmann.planerapp.data.provider.DatabaseContract.Course.Index;
 
-import static de.jonasrottmann.planerapp.data.model.Course.Category.getCategoryColorForId;
+import static de.jonasrottmann.planerapp.data.model.Category.getCategoryColorForId;
 
 /**
  * Created by Jonas Rottmann on 19.01.17.
@@ -52,7 +52,7 @@ class OverviewRowAdapter extends CursorRecyclerViewAdapter<OverviewRowAdapter.Vi
         holder.title.setText(cursor.getString(Index.COLUMN_NAME));
         holder.teacher.setText(cursor.getString(Index.COLUMN_TEACHER));
         holder.room.setText(cursor.getString(Index.COLUMN_ROOM));
-        holder.icon.setImageDrawable(ContextCompat.getDrawable(context, Course.Icon.getIconResId(cursor.getInt(Index.COLUMN_ICON))));
+        holder.icon.setImageDrawable(ContextCompat.getDrawable(context, Icon.getIconResId(cursor.getInt(Index.COLUMN_ICON))));
         holder.star.setVisibility(cursor.getInt(Index.COLUMN_STAR) == 0 ? View.GONE : View.VISIBLE);
         ColorFilter colorFilter = new PorterDuffColorFilter(ContextCompat.getColor(context, getCategoryColorForId(cursor.getInt(Index.COLUMN_CAT))), PorterDuff.Mode.SRC_ATOP);
         holder.star.setColorFilter(colorFilter);

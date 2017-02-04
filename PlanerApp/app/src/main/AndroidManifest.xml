@@ -25,6 +25,7 @@
 
         <receiver android:name=".service.NotificationPublisher" />
 
+        <service android:name=".service.NotificationSoundService" />
     </application>
 
 </manifest>

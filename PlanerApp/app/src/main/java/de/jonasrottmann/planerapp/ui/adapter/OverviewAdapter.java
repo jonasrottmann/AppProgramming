@@ -15,7 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
 import de.jonasrottmann.planerapp.data.FilterCursorWrapper;
-import de.jonasrottmann.planerapp.data.model.Course;
+import de.jonasrottmann.planerapp.data.model.TimeSlot;
 import de.jonasrottmann.planerapp.data.provider.DatabaseContract.Course.Index;
 import de.jonasrottmann.planerapp.ui.fragment.OverviewFragment;
 import de.jonasrottmann.planerapp.ui.views.HorizontalSpaceItemDecoration;
@@ -71,7 +71,7 @@ public class OverviewAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, Cursor cursor) {
-        ((Row) holder).getTimeView().setText(Course.TimeSlot.getTimeSlotForId(holder.getAdapterPosition()));
+        ((Row) holder).getTimeView().setText(TimeSlot.getTimeSlotForId(holder.getAdapterPosition()));
         switch (holder.getItemViewType()) {
             case VIEWTYPE_COURSES:
                 Cursor cursor1 = new FilterCursorWrapper(cursor, String.valueOf(holder.getAdapterPosition()), Index.COLUMN_TIMESLOT);

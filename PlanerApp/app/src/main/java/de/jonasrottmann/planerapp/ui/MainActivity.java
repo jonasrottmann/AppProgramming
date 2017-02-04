@@ -17,6 +17,7 @@ import butterknife.ButterKnife;
 import de.jonasrottmann.planerapp.R;
 import de.jonasrottmann.planerapp.data.model.Course;
 import de.jonasrottmann.planerapp.data.provider.DatabaseContract;
+import de.jonasrottmann.planerapp.service.NotificationPublisher;
 import de.jonasrottmann.planerapp.ui.fragment.DetailFragment;
 import de.jonasrottmann.planerapp.ui.fragment.OverviewFragment;
 
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
                 getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.container1, DetailFragment.getInstance(course)).commit();
             }
         }
+        // Stop notification sound
+        NotificationPublisher.stopSound(this);
     }
 
     @Override
@@ -76,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
                 getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.container1, DetailFragment.getInstance(course)).commit();
             }
         }
+        // Stop notification sound
+        NotificationPublisher.stopSound(this);
     }
 
     @Nullable
@@ -83,7 +88,8 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
         Course course = null;
         if (intent.getIntExtra(EXTRA_COURSE_ID, -1) != -1) {
             Cursor cursor =
-                getContentResolver().query(ContentUris.withAppendedId(DatabaseContract.Course.CONTENT_URI, intent.getIntExtra(EXTRA_COURSE_ID, -1)), DatabaseContract.Course.COLUMNS, null, null, null);
+                getContentResolver().query(ContentUris.withAppendedId(DatabaseContract.Course.CONTENT_URI, intent.getIntExtra(EXTRA_COURSE_ID, -1)), DatabaseContract.Course.ALL_COLUMNS, null, null,
+                    null);
             if (cursor != null) {
                 if (cursor.moveToFirst()) {
                     course = new Course(cursor);
@@ -98,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements OverviewFragment.
 
     @Override
     public void onCourseClicked(int id) {
-        Cursor cursor = getContentResolver().query(ContentUris.withAppendedId(DatabaseContract.Course.CONTENT_URI, id), DatabaseContract.Course.COLUMNS, null, null, null);
+        Cursor cursor = getContentResolver().query(ContentUris.withAppendedId(DatabaseContract.Course.CONTENT_URI, id), DatabaseContract.Course.ALL_COLUMNS, null, null, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 Course course = new Course(cursor); // Build data object from cursor

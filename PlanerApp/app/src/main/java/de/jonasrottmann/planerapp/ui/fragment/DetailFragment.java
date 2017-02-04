@@ -29,14 +29,17 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.jonasrottmann.planerapp.R;
+import de.jonasrottmann.planerapp.data.model.Category;
 import de.jonasrottmann.planerapp.data.model.Course;
+import de.jonasrottmann.planerapp.data.model.Icon;
+import de.jonasrottmann.planerapp.data.model.TimeSlot;
 import de.jonasrottmann.planerapp.data.provider.DatabaseContract;
 import de.jonasrottmann.planerapp.service.NotificationPublisher;
 import timber.log.Timber;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static de.jonasrottmann.planerapp.data.provider.DatabaseContract.Course.COLUMNS;
+import static de.jonasrottmann.planerapp.data.provider.DatabaseContract.Course.ALL_COLUMNS;
 import static de.jonasrottmann.planerapp.data.provider.DatabaseContract.Course.Columns.COLUMN_ID;
 import static de.jonasrottmann.planerapp.data.provider.DatabaseContract.Course.Columns.COLUMN_STAR;
 import static de.jonasrottmann.planerapp.data.provider.DatabaseContract.Course.Columns.COLUMN_TIMESLOT;
@@ -123,7 +126,7 @@ public class DetailFragment extends Fragment {
         if (course != null) {
             // Setup views
             fab.setActivated(course.getStarred());
-            backdrop.setImageDrawable(ContextCompat.getDrawable(getActivity(), Course.Icon.getIconResId(course.getIcon())));
+            backdrop.setImageDrawable(ContextCompat.getDrawable(getActivity(), Icon.getIconResId(course.getIcon())));
             if (course.getTeacher() != null) {
                 teacherText.setText(course.getTeacher());
             } else {
@@ -134,18 +137,18 @@ public class DetailFragment extends Fragment {
             } else {
                 roomRow.setVisibility(GONE);
             }
-            timeText.setText(Course.TimeSlot.getTimeSlotForId(course.getTimeslot()));
-            catText.setText(Course.Category.getCategoryStringForId(course.getCategory()));
+            timeText.setText(TimeSlot.getTimeSlotForId(course.getTimeslot()));
+            catText.setText(Category.getCategoryStringForId(course.getCategory()));
 
             // Color
-            ColorFilter colorFilter = new PorterDuffColorFilter(ContextCompat.getColor(getActivity(), Course.Category.getCategoryColorForId(course.getCategory())), PorterDuff.Mode.SRC_ATOP);
+            ColorFilter colorFilter = new PorterDuffColorFilter(ContextCompat.getColor(getActivity(), Category.getCategoryColorForId(course.getCategory())), PorterDuff.Mode.SRC_ATOP);
             teacherIcon.setColorFilter(colorFilter);
             roomIcon.setColorFilter(colorFilter);
             timeIcon.setColorFilter(colorFilter);
             catIcon.setColorFilter(colorFilter);
-            collapsing.setBackgroundColor(ContextCompat.getColor(getActivity(), Course.Category.getCategoryColorForId(course.getCategory())));
-            collapsing.setContentScrimColor(ContextCompat.getColor(getActivity(), Course.Category.getCategoryColorForId(course.getCategory())));
-            collapsing.setStatusBarScrimColor(ContextCompat.getColor(getActivity(), Course.Category.getCategoryColorForId(course.getCategory())));
+            collapsing.setBackgroundColor(ContextCompat.getColor(getActivity(), Category.getCategoryColorForId(course.getCategory())));
+            collapsing.setContentScrimColor(ContextCompat.getColor(getActivity(), Category.getCategoryColorForId(course.getCategory())));
+            collapsing.setStatusBarScrimColor(ContextCompat.getColor(getActivity(), Category.getCategoryColorForId(course.getCategory())));
 
             // Setup toolbar
             collapsing.setTitle(course.getName());
@@ -175,9 +178,12 @@ public class DetailFragment extends Fragment {
         }
     }
 
-    public boolean toggleStarCourseClicked() {
+    private boolean toggleStarCourseClicked() {
+        if (course == null) {
+            return false;
+        }
         String selection = COLUMN_WEEKDAY + " = ? AND " + COLUMN_TIMESLOT + " = ? AND " + COLUMN_STAR + " = ? AND " + COLUMN_ID + " != ?";
-        Cursor collisionCursor = getActivity().getContentResolver().query(DatabaseContract.Course.CONTENT_URI, COLUMNS, selection, new String[] {
+        Cursor collisionCursor = getActivity().getContentResolver().query(DatabaseContract.Course.CONTENT_URI, ALL_COLUMNS, selection, new String[] {
             String.valueOf(course.getWeekday()), String.valueOf(course.getTimeslot()), String.valueOf(1), String.valueOf(course.getId())
         }, null, null);
         if (collisionCursor != null && collisionCursor.getCount() > 0 && collisionCursor.moveToFirst()) {
@@ -230,7 +236,7 @@ public class DetailFragment extends Fragment {
     }
 
     private void requeryCourse() {
-        Cursor cursor = getActivity().getContentResolver().query(ContentUris.withAppendedId(DatabaseContract.Course.CONTENT_URI, course.getId()), COLUMNS, null, null, null);
+        Cursor cursor = getActivity().getContentResolver().query(ContentUris.withAppendedId(DatabaseContract.Course.CONTENT_URI, course.getId()), ALL_COLUMNS, null, null, null);
         if (cursor != null && cursor.getCount() > 0 && cursor.moveToFirst()) {
             course = new Course(cursor);
         } else {

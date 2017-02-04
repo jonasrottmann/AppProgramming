@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.support.annotation.NonNull;
 import de.jonasrottmann.planerapp.data.provider.DatabaseContract.Course.Columns;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,11 +24,17 @@ class CourseDatabaseHelper extends SQLiteOpenHelper {
 
     private final Context context;
 
-    CourseDatabaseHelper(Context context) {
+    /**
+     * @param context A valid {@link Context} (used to access assets).
+     */
+    CourseDatabaseHelper(@NonNull Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
     }
 
+    /*
+     * SQLiteOpenHelper
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         AssetManager am = context.getAssets();
@@ -57,6 +64,9 @@ class CourseDatabaseHelper extends SQLiteOpenHelper {
         this.onCreate(db);
     }
 
+    /*
+     * Access Methods
+     */
     Cursor getAllCourses(String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         SQLiteQueryBuilder sqliteQueryBuilder = new SQLiteQueryBuilder();
         sqliteQueryBuilder.setTables(DatabaseContract.Course.TABLE_NAME);

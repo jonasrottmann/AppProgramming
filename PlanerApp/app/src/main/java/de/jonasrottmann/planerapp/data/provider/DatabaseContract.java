@@ -28,9 +28,11 @@ public class DatabaseContract {
     public static class Course {
         public static final String TABLE_NAME = "course";
         public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, TABLE_NAME);
+        public static final String[] ALL_COLUMNS = { COLUMN_ID, COLUMN_NAME, COLUMN_TEACHER, COLUMN_ROOM, COLUMN_TIMESLOT, COLUMN_WEEKDAY, COLUMN_CAT, COLUMN_STAR, COLUMN_ICON };
 
-        public static final String[] COLUMNS = { COLUMN_ID, COLUMN_NAME, COLUMN_TEACHER, COLUMN_ROOM, COLUMN_TIMESLOT, COLUMN_WEEKDAY, COLUMN_CAT, COLUMN_STAR, COLUMN_ICON };
-
+        /**
+         * Contains the names of the columns of the SQLite database.
+         */
         @Retention(SOURCE)
         @StringDef({
             Columns.COLUMN_ID, Columns.COLUMN_NAME, Columns.COLUMN_TEACHER, Columns.COLUMN_ROOM, Columns.COLUMN_TIMESLOT, Columns.COLUMN_WEEKDAY, Columns.COLUMN_CAT, Columns.COLUMN_STAR,
@@ -48,7 +50,9 @@ public class DatabaseContract {
             String COLUMN_ICON = "icon";
         }
 
-
+        /**
+         * Contains the indices for the respective column.
+         */
         @Retention(SOURCE)
         @IntDef({
             Index.COLUMN_ID, Index.COLUMN_NAME, Index.COLUMN_TEACHER, Index.COLUMN_ROOM, Index.COLUMN_TIMESLOT, Index.COLUMN_WEEKDAY, Index.COLUMN_CAT, Index.COLUMN_STAR, Index.COLUMN_ICON
