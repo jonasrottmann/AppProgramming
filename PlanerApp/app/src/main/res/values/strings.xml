@@ -5,4 +5,5 @@
     <string name="room">Raum</string>
     <string name="time">Uhrzeit</string>
     <string name="category">Kategorie</string>
+    <string name="lunchbreak">Mittagspause</string>
 </resources>

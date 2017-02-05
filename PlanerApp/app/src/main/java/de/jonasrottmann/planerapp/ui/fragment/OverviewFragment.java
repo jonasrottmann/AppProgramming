@@ -25,6 +25,7 @@ import de.jonasrottmann.planerapp.ui.adapter.OverviewAdapter;
  * Created by Jonas Rottmann on 19.01.17.
  * Copyright © 2017 fluidmobile. All rights reserved.
  */
+@SuppressWarnings("WeakerAccess")
 public class OverviewFragment extends ContractFragment<OverviewFragment.Contract> implements LoaderManager.LoaderCallbacks<Cursor> {
 
     @BindView(R.id.recycler)

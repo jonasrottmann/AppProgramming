@@ -20,8 +20,8 @@ import timber.log.Timber;
  * Copyright © 2017 fluidmobile. All rights reserved.
  */
 public class NotificationPublisher extends BroadcastReceiver {
-    public static final String NOTIFICATION_ID = "NOTIFICATION_ID";
-    public static final String NOTIFICATION = "NOTIFICATION";
+    private static final String NOTIFICATION_ID = "NOTIFICATION_ID";
+    private static final String NOTIFICATION = "NOTIFICATION";
 
     public void onReceive(Context context, Intent intent) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

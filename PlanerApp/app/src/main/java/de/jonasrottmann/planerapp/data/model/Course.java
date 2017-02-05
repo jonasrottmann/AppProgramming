@@ -35,7 +35,7 @@ public class Course implements Parcelable {
     private final int weekday;
     private final int category;
     private final int icon;
-    private int starred;
+    private final int starred;
 
     /**
      * Build {@link Course} object based on a {@link Cursor}.

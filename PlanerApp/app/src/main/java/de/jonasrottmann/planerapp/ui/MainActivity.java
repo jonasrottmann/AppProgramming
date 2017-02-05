@@ -25,6 +25,7 @@ import de.jonasrottmann.planerapp.ui.fragment.OverviewFragment;
  * Created by Jonas Rottmann on 19.01.17.
  * Copyright © 2017 fluidmobile. All rights reserved.
  */
+@SuppressWarnings("WeakerAccess")
 public class MainActivity extends AppCompatActivity implements OverviewFragment.Contract {
 
     private static final String EXTRA_COURSE_ID = "EXTRA_COURSE_ID";

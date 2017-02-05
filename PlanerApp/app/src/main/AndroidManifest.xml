@@ -21,7 +21,8 @@
 
         <provider
             android:name=".data.provider.CourseContentProvider"
-            android:authorities="de.jonasrottmann.planerapp" />
+            android:authorities="de.jonasrottmann.planerapp"
+            android:exported="false" />
 
         <receiver android:name=".service.NotificationPublisher" />
 

@@ -16,11 +16,11 @@ import de.jonasrottmann.planerapp.data.model.Course;
  */
 public class CourseContentProvider extends ContentProvider {
     // URI-Matcher codes
-    public static final int COURSES = 100;
-    public static final int COURSE_ID = 110;
+    private static final int COURSES = 100;
+    private static final int COURSE_ID = 110;
     // MIME types
-    public static final String COURSE_CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd." + DatabaseContract.AUTHORITY + ".courses";
-    public static final String COURSE_CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd." + DatabaseContract.AUTHORITY + ".courses";
+    private static final String COURSE_CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/vnd." + DatabaseContract.AUTHORITY + ".courses";
+    private static final String COURSE_CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/vnd." + DatabaseContract.AUTHORITY + ".courses";
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 

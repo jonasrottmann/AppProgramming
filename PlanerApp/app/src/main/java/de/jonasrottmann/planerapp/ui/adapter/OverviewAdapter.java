@@ -98,7 +98,7 @@ public class OverviewAdapter extends CursorRecyclerViewAdapter<RecyclerView.View
                 }
                 break;
             case VIEWTYPE_TEXT:
-                ((ViewHolderText) holder).text.setText("Mittagspause");
+                ((ViewHolderText) holder).text.setText(R.string.lunchbreak);
                 break;
         }
     }

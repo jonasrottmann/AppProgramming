@@ -8,9 +8,9 @@ import android.database.CursorWrapper;
  * Copyright © 2017 fluidmobile. All rights reserved.
  */
 public class FilterCursorWrapper extends CursorWrapper {
-    private String filter;
-    private int column;
-    private int[] index;
+    private final String filter;
+    private final int column;
+    private final int[] index;
     private int count = 0;
     private int pos = 0;
 
@@ -18,7 +18,7 @@ public class FilterCursorWrapper extends CursorWrapper {
         super(cursor);
         this.filter = filter.toLowerCase();
         this.column = column;
-        if (this.filter != "") {
+        if (!this.filter.isEmpty()) {
             this.count = super.getCount();
             this.index = new int[this.count];
             for (int i = 0; i < this.count; i++) {

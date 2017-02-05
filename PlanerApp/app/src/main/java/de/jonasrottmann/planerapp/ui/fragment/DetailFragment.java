@@ -49,6 +49,7 @@ import static de.jonasrottmann.planerapp.data.provider.DatabaseContract.Course.C
  * Created by Jonas Rottmann on 19.01.17.
  * Copyright © 2017 fluidmobile. All rights reserved.
  */
+@SuppressWarnings("WeakerAccess")
 public class DetailFragment extends Fragment {
 
     private static final String EXTRA_COURSE = "EXTRA_COURSE";
