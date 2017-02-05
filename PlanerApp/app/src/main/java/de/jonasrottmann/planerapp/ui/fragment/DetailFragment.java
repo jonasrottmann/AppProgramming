@@ -90,6 +90,9 @@ public class DetailFragment extends Fragment {
     @BindView(R.id.placeholder)
     TextView placeholder;
     @Nullable
+    @BindView(R.id.title)
+    TextView title;
+    @Nullable
     private Course course;
 
     @NonNull
@@ -152,11 +155,18 @@ public class DetailFragment extends Fragment {
             collapsing.setStatusBarScrimColor(ContextCompat.getColor(getActivity(), Category.getCategoryColorForId(course.getCategory())));
 
             // Setup toolbar
-            collapsing.setTitle(course.getName());
             ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
             if (getActivity().getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                 ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+            }
+            if (title != null) {
+                // Use extra textview in landscape because collapsing cannot display multiple lines
+                title.setText(course.getName());
+                collapsing.setTitleEnabled(false);
+                ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("");
+            } else {
+                collapsing.setTitle(course.getName());
             }
         } else {
             placeholder.setVisibility(VISIBLE);
