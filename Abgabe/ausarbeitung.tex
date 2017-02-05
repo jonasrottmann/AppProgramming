@@ -1,0 +1,210 @@
+\documentclass[11pt, oneside]{article}
+\usepackage[ngerman]{babel}
+\usepackage[ngerman]{datetime}
+\usepackage[utf8]{inputenc}
+
+\usepackage[footnotesep=2\baselineskip]{geometry}
+\geometry{letterpaper}
+
+\usepackage{subfig}
+
+\usepackage{graphicx}
+\graphicspath{ {assets/} }
+\usepackage{amssymb}
+\usepackage{amsmath}
+
+\usepackage[table,xcdraw]{xcolor}
+
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows}
+
+\usepackage[hyphens]{url} % Break long urls at hyphens
+\usepackage{hyperref}
+
+\usepackage[hang]{footmisc} % Indent multiline footnotes
+
+\usepackage[sc]{mathpazo} % Use the Palatino font
+\linespread{1.05} % Line spacing - Palatino needs more space between lines
+\usepackage{microtype} % Slightly tweak font spacing for aesthetics
+
+\usepackage[lighttt]{lmodern} % Tweak monospace font
+
+% Allows abstract customization
+\usepackage{abstract}
+% Set the "Abstract" text to bold
+\renewcommand{\abstractnamefont}{\normalfont\bfseries}
+% Set the abstract itself to small italic text
+\renewcommand{\abstracttextfont}{\normalfont\small\itshape}
+
+% new line after \paragraph{}
+\newcommand{\myparagraph}[1]{\paragraph{#1}\mbox{}\\}
+
+%----------------------------------------------------------------------
+%	CODE FORMATTING
+%----------------------------------------------------------------------
+%
+% Usage:
+%
+%	\begin{lstlisting}[style=custom-xml]
+%		...
+%	\end{lstlisting}
+%
+%
+%	\lstinputlisting[style=custom-java, caption={AsyncTask Example}]{AsyncTaskExample1.java}
+%
+\usepackage{listings}
+\usepackage{xcolor}
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{dkred}{rgb}{0.6,0,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{gray}{rgb}{0.4,0.4,0.4}
+\definecolor{darkblue}{rgb}{0.0,0.0,0.6}
+\definecolor{cyan}{rgb}{0.0,0.6,0.6}
+\lstset{
+	frame=tb,
+	aboveskip=3mm,
+	belowskip=3mm,
+	showstringspaces=false,
+	numberblanklines=false,
+	columns=flexible,
+	basicstyle={\small\ttfamily},
+	numberstyle=\tiny\color{gray},
+	numbers=left,
+	breaklines=true,
+	breakatwhitespace=true,
+	%title=\lstname, % show the filename of files included with \lstinputlisting;
+}
+\lstdefinestyle{custom-java}{
+	language=Java,
+	keywordstyle=\color{blue},
+	commentstyle=\color{dkgreen},
+	stringstyle=\color{mauve},
+	postbreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\color{gray}\hookrightarrow\space}}
+}
+\lstdefinestyle{custom-xml}{
+	language=XML,
+	morestring=[s][\color{mauve}]{"}{"},
+	morestring=[s][\color{black}]{>}{<},
+	morecomment=[s]{<?}{?>},
+	morecomment=[s][\color{dkgreen}]{<!--}{-->},
+	stringstyle=\color{black},
+	identifierstyle=\color{darkblue},
+	keywordstyle=\color{cyan},
+	morekeywords={note, to, from, heading, body},
+	tabsize=3
+}
+
+\renewcommand{\lstlistingname}{Code} %Change "Listing" to "Code" in caption
+
+%----------------------------------------------------------------------
+%	INLINECODE
+%
+%	Usage: \inlinecode{<Code>}
+%----------------------------------------------------------------------
+%\newcommand{\inlinecode}[1]{\colorbox{gray!10}{\texttt{#1}}}
+%\newcommand{\inlinecode}[1]{\textcolor{dkgreen}{\texttt{#1}}}
+\newcommand{\inlinecode}[1]{\textcolor{mauve}{\texttt{#1}}}
+
+\renewcommand{\texttt}[1]{%
+  \begingroup
+  \ttfamily
+  \begingroup\lccode`~=`/\lowercase{\endgroup\def~}{/\discretionary{}{}{}}%
+  \begingroup\lccode`~=`[\lowercase{\endgroup\def~}{[\discretionary{}{}{}}%
+  \begingroup\lccode`~=`.\lowercase{\endgroup\def~}{.\discretionary{}{}{}}%
+  \catcode`/=\active\catcode`[=\active\catcode`.=\active
+  \scantokens{#1\noexpand}%
+  \endgroup
+}
+
+%----------------------------------------------------------------------
+%	BOXES
+%----------------------------------------------------------------------
+%
+% Usage:
+%	\begin{mdframed}[style=highlightbox]
+%		...
+%	\end{mdframed}
+%
+\usepackage[framemethod=tikz]{mdframed} %background
+\mdfdefinestyle{highlightbox}{%
+	backgroundcolor=gray!20,
+	linewidth=0pt,
+	innertopmargin=10pt,
+	innerbottommargin=10pt,
+	frametitleaboveskip=5pt,
+	roundcorner=5pt
+}
+
+\mdfdefinestyle{advicebox}{%
+	linecolor=gray!20,
+	linewidth=1pt,
+	innertopmargin=10pt,
+	innerbottommargin=10pt,
+	frametitleaboveskip=5pt,
+	roundcorner=5pt
+}
+
+\mdfdefinestyle{example}{settings={\@mkboth{\mdf@frametitle}{\mdf@frametitle}}}
+
+
+
+
+
+
+
+
+
+
+%----------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------
+
+\begin{document}
+\hypersetup{pageanchor=false}
+\thispagestyle{empty}
+
+\begin{figure}
+\centering
+\includegraphics[height=80pt]{hska_logo.png}
+\end{figure}
+
+\begin{center}
+
+\large{Fakultät für Informatik- und Wirtschaftsinformatik \\
+der Hochschule Karlsruhe - Technik und Wirtschaft \\}
+\vspace{5mm}
+\large{\textsc{IW912 App-Programming WS2016/17}} \\
+\vspace{3mm}
+\fontsize{16pt}{7pt}\selectfont\textbf{Aufgaben Klausurbonus} \\
+\vspace{5mm}
+Jan Sauerwein\\
+\vspace{10mm}
+\large{\textbf{Ausarbeitung}} \\
+\vspace{10mm}
+\textsc{Jonas Rottmann}\\
+Matrikel Nr.: 44501\\
+\href{mailto:rojo1020@hs-karlsruhe.de}{rojo1020@hs-karlsruhe.de}\\[2mm]
+
+\end{center}
+\newpage
+
+%----------------------------------------------------------------------
+%	TOC
+%----------------------------------------------------------------------
+
+\microtypesetup{protrusion=false} % disables protrusion locally in the document
+\tableofcontents % prints Table of Contents
+\microtypesetup{protrusion=true} % enables protrusion
+\newpage
+
+%----------------------------------------------------------------------
+%	MAIN CONTENTS
+%----------------------------------------------------------------------
+\pagenumbering{arabic}
+
+\section{Test}
+
+
+
+\end{document}
