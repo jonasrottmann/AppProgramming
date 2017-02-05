@@ -23,6 +23,7 @@ public class NotificationPublisher extends BroadcastReceiver {
     private static final String NOTIFICATION_ID = "NOTIFICATION_ID";
     private static final String NOTIFICATION = "NOTIFICATION";
 
+    @Override
     public void onReceive(Context context, Intent intent) {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = intent.getParcelableExtra(NOTIFICATION);
@@ -51,6 +52,8 @@ public class NotificationPublisher extends BroadcastReceiver {
         // Cancel notification
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
         notificationManagerCompat.cancel(course.getId());
+        // Stop sound
+        stopSound(context);
     }
 
     private static PendingIntent createNotificationBroadcastIntent(Context context, Course course) {

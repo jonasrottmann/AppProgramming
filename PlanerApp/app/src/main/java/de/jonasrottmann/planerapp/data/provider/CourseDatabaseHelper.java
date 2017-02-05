@@ -56,6 +56,7 @@ class CourseDatabaseHelper extends SQLiteOpenHelper {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        am.close();
     }
 
     @Override
