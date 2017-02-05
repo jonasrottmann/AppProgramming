@@ -241,9 +241,10 @@ Bei der Tablet-Ansicht (Abbildung \ref{fig:sketch_tablet}) wird das Layout aus A
 
 
 \subsection{Begründung}
-Die Detailansicht bietet mit dem großen Bild eine gute Übersichtlichkeit, außerdem wird das gesamte Layout in der Farbe, der Kategorie, des ausgewählten Angebots eingefärbt, was eine zusäzuliche Orientierungshilfe für die Grundschulkinder bietet. Im der Landscape-Orientierung werden Bild und Infos zum Angebot nebeneinander angezeigt um auch hier durch ein großes Bild möglichst viel Übersichtlicheit zu bieten ohne unnötig scrollen zu müssen.
+Die Detailansicht bietet mit dem großen Bild eine gute Übersichtlichkeit, außerdem wird das gesamte Layout in der Farbe, der Kategorie, des ausgewählten Angebots eingefärbt (siehe Abbildungen \ref{fig:fab} und \ref{fig:alert}), was eine zusäzuliche Orientierungshilfe für die Grundschulkinder bietet. Im der Landscape-Orientierung werden Bild und Infos zum Angebot nebeneinander angezeigt um auch hier durch ein großes Bild möglichst viel Übersichtlicheit zu bieten ohne unnötig scrollen zu müssen.
 
-Für Tablets wird das gleiche Layout benutzt (später Neu-Anordnung von Fragments), da ich mich für ein Master/Detail-Flow Navigations Pattern entschieden habe. Bei Tablets wird nicht zwischen Portrait und Landscape unterschieden, da in beiden Orientierungen genug Platz zur Verfügung steht.
+Für Tablets wird das gleiche Layout benutzt (später Neu-Anordnung von Fragments), da ich mich für ein Master/Detail-Flow Navigations Pattern\footnote{\url{https://developer.android.com/training/implementing-navigation/descendant.html\#master-detail}, [Online; \formatdate{05}{02}{2017}]} entschieden habe. Bei Tablets wird nicht zwischen Portrait und Landscape unterschieden, da in beiden Orientierungen genug Platz zur Verfügung steht.
+
 
 
 \section{Layout Umsetzung}
@@ -410,6 +411,7 @@ Die Detailansicht in \inlinecode{fragment\_detail.xml} enthält einen \inlinecod
 	\includegraphics[scale=0.075]{screen_fab_active}
 	\end{center}
 	\caption{Detailansicht mit Buttom zur Markierung eines Angebots}
+    \label{fig:fab}
 \end{figure}
 
 \subsection{Aktion}
